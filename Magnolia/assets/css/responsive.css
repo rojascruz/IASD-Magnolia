@@ -1,0 +1,136 @@
+/* 
+ * Estilos responsivos para la landing page de Iglesia Adventista
+ * Autor: Generado para el proyecto Magnolia
+ * Versión: 1.0
+ */
+
+/* Tablets grandes y dispositivos medianos (menores a 1200px) */
+@media screen and (max-width: 1200px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+/* Tablets y dispositivos medianos (menores a 992px) */
+@media screen and (max-width: 992px) {
+    .container {
+        max-width: 720px;
+    }
+    
+    .hero-text h2 {
+        font-size: 3rem;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+    }
+    
+    .worship-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Tablets pequeñas y móviles grandes (menores a 768px) */
+@media screen and (max-width: 768px) {
+    .container {
+        max-width: 540px;
+    }
+    
+    .navbar {
+        padding: 1rem 0;
+    }
+    
+    .navbar .container {
+        flex-wrap: wrap;
+    }
+    
+    nav {
+        display: none;
+        width: 100%;
+        order: 3;
+        margin-top: 1rem;
+    }
+    
+    nav.active {
+        display: block;
+    }
+    
+    nav ul {
+        flex-direction: column;
+    }
+    
+    nav ul li {
+        margin: 0;
+    }
+    
+    nav ul li a {
+        display: block;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .hero-content {
+        flex-direction: column;
+    }
+    
+    .hero-text {
+        order: 2;
+    }
+    
+    .hero-image {
+        order: 1;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .about-cards {
+        flex-direction: column;
+    }
+    
+    .event-card {
+        flex-direction: column;
+    }
+    
+    .event-image {
+        max-width: 100%;
+    }
+    
+    .footer-sections {
+        flex-direction: column;
+    }
+}
+
+/* Dispositivos móviles (menores a 576px) */
+@media screen and (max-width: 576px) {
+    html {
+        font-size: 14px;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .hero-text h2 {
+        font-size: 2.5rem;
+    }
+    
+    .worship-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Para asegurar que el menú móvil funcione correctamente */
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
