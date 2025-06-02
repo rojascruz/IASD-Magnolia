@@ -1,0 +1,399 @@
+/* club.css - Estilos específicos para la página de clubs */
+
+/* Botón de inscripción verde */
+.inscription-button-container {
+    text-align: center;
+    margin: 30px 0 50px 0;
+}
+
+.inscription-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.inscription-btn:hover {
+    background: #218838;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+}
+
+/* Sección principal de clubs */
+.clubs {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* Grid de clubs */
+.clubs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    margin-top: 50px;
+}
+
+/* Tarjetas de clubs */
+.club-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.club-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Header de cada club */
+.club-header {
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* Colores específicos por club */
+.club-card.aventureros .club-header {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.club-card.conquistadores .club-header {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.club-card.cadetes .club-header {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* Logo del club */
+.club-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.club-logo svg {
+    width: 40px;
+    height: 40px;
+    color: white;
+}
+
+/* Título del club */
+.club-header h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Rango de edad */
+.age-range {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    backdrop-filter: blur(10px);
+}
+
+/* Contenido del club */
+.club-content {
+    padding: 30px;
+}
+
+.club-content p {
+    color: #6c757d;
+    line-height: 1.7;
+    margin-bottom: 25px;
+    font-size: 1rem;
+}
+
+/* Características del club */
+.club-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #495057;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.feature:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.feature-icon {
+    font-size: 1.2rem;
+}
+
+/* Horario del club */
+.club-schedule {
+    background: #e3f2fd;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border-left: 4px solid #2196f3;
+    font-size: 0.95rem;
+}
+
+.club-schedule strong {
+    color: #1976d2;
+    font-weight: 600;
+}
+
+/* Sección de información adicional */
+.club-info {
+    padding: 80px 0;
+    background: white;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.info-card {
+    text-align: center;
+    padding: 40px 30px;
+    border-radius: 15px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    background: #e9ecef;
+    transform: translateY(-5px);
+}
+
+.info-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-icon svg {
+    width: 40px;
+    height: 40px;
+    color: white;
+}
+
+.info-card h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.info-card p {
+    color: #6c757d;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Estado activo para navegación */
+.active {
+    color: #667eea !important;
+    font-weight: 600;
+}
+
+/* Efectos de animación para clubs */
+.club-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.club-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.club-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.club-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive para tablets */
+@media (max-width: 768px) {
+    .clubs {
+        padding: 60px 0;
+    }
+    
+    .clubs-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .club-header {
+        padding: 25px;
+    }
+    
+    .club-header h3 {
+        font-size: 1.5rem;
+    }
+    
+    .club-content {
+        padding: 25px;
+    }
+    
+    .club-info {
+        padding: 60px 0;
+    }
+    
+    .info-grid {
+        gap: 25px;
+        margin-top: 40px;
+    }
+    
+    .info-card {
+        padding: 30px 20px;
+    }
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+    .clubs {
+        padding: 40px 0;
+    }
+    
+    .clubs-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 30px;
+    }
+    
+    .club-card {
+        margin: 0 10px;
+    }
+    
+    .club-header {
+        padding: 20px;
+    }
+    
+    .club-header h3 {
+        font-size: 1.3rem;
+    }
+    
+    .club-logo {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 15px;
+    }
+    
+    .club-logo svg {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .club-content {
+        padding: 20px;
+    }
+    
+    .club-features {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .feature {
+        justify-content: center;
+    }
+    
+    .club-info {
+        padding: 40px 0;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 30px;
+    }
+    
+    .info-card {
+        padding: 25px 15px;
+    }
+    
+    .info-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+    }
+    
+    .info-icon svg {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .info-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .inscription-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+}
+
+/* Efectos especiales para hover en cada club */
+.club-card.aventureros:hover {
+    box-shadow: 0 25px 60px rgba(240, 147, 251, 0.3);
+}
+
+.club-card.conquistadores:hover {
+    box-shadow: 0 25px 60px rgba(79, 172, 254, 0.3);
+}
+
+.club-card.cadetes:hover {
+    box-shadow: 0 25px 60px rgba(67, 233, 123, 0.3);
+}
