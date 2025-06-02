@@ -15,8 +15,8 @@ class ClubInteractive {
                     'Exploración de la naturaleza',
                     'Actividades de servicio'
                 ],
-                schedule: 'Sábados 3:00 PM',
-                leader: 'Directora: Hna. María González',
+                schedule: 'Sábados 5:00 PM',
+                leader: 'Directora: XXXXXXXXXXXXXXXXXXXXX',
                 requirements: [
                     'Edad: 6 a 9 años',
                     'Autorización de padres',
@@ -35,8 +35,8 @@ class ClubInteractive {
                     'Estudio de la naturaleza',
                     'Desarrollo de liderazgo'
                 ],
-                schedule: 'Sábados 4:00 PM',
-                leader: 'Director: Hno. Carlos Rodríguez',
+                schedule: 'Sábados 5:00 PM',
+                leader: 'Director: XXXXXXXXXXXXXXXXXXXX',
                 requirements: [
                     'Edad: 10 a 15 años',
                     'Compromiso de participación',
@@ -55,8 +55,8 @@ class ClubInteractive {
                     'Servicio en la iglesia',
                     'Desarrollo profesional'
                 ],
-                schedule: 'Domingos 5:00 PM',
-                leader: 'Director: Hno. David Martínez',
+                schedule: 'Sábados 5:00 PM',
+                leader: 'Director: XXXXXXXXXXXXXXXXXXXXXXXXXXXX',
                 requirements: [
                     'Edad: 16 a 21 años',
                     'Compromiso de servicio',
@@ -126,8 +126,12 @@ class ClubInteractive {
                             </div>
                             
                             <div class="club-actions">
-                                <a href="index.html#contacto" class="btn-join">Únete Ahora</a>
-                                <button class="btn-info">Más Información</button>
+                                <button class="btn-join" id="btn-join-club">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                    </svg>
+                                    Únete Ahora
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -149,6 +153,11 @@ class ClubInteractive {
             }
         });
         
+        // Event listener para el botón "Únete Ahora"
+        this.modal.querySelector('#btn-join-club').addEventListener('click', () => {
+            this.openInscriptionModal();
+        });
+        
         // Cerrar con Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.modal.classList.contains('active')) {
@@ -157,6 +166,42 @@ class ClubInteractive {
         });
 
         console.log('📋 Modal de clubs creado correctamente');
+    }
+
+    // Función para abrir el modal de inscripción
+    openInscriptionModal() {
+        console.log('🚀 Abriendo modal de inscripción desde club...');
+        
+        // Cerrar el modal actual del club
+        this.closeModal();
+        
+        // Esperar un poco para que se cierre el modal actual
+        setTimeout(() => {
+            // Verificar si existe el modal de inscripción
+            if (window.inscriptionModal) {
+                window.inscriptionModal.openModal();
+                console.log('✅ Modal de inscripción abierto desde club');
+            } else {
+                console.error('❌ No se encontró el modal de inscripción');
+                // Fallback: intentar hacer clic en el botón de inscripción principal
+                const inscriptionBtn = document.getElementById('open-inscription');
+                if (inscriptionBtn) {
+                    inscriptionBtn.click();
+                    console.log('🔄 Usando botón de inscripción principal como fallback');
+                } else {
+                    // Último fallback: mostrar alerta
+                    if (window.notifications) {
+                        window.notifications.info(
+                            'Formulario de Inscripción',
+                            'Por favor, use el botón "📝 Inscripción" en la parte superior de la página para inscribirse.',
+                            { duration: 5000 }
+                        );
+                    } else {
+                        alert('Por favor, use el botón "📝 Inscripción" en la parte superior de la página para inscribirse.');
+                    }
+                }
+            }
+        }, 300);
     }
 
     // Agregar estilos CSS para el modal
@@ -366,24 +411,29 @@ class ClubInteractive {
                 }
                 
                 .btn-join, .btn-info {
-                    padding: 12px 25px;
-                    border-radius: 25px;
+                    padding: 15px 30px;
+                    border-radius: 50px;
                     font-weight: 600;
                     text-decoration: none;
                     border: none;
                     cursor: pointer;
                     transition: all 0.3s ease;
-                    font-size: 0.95rem;
+                    font-size: 1rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    justify-content: center;
+                    min-width: 180px;
                 }
                 
                 .btn-join {
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    background: linear-gradient(135deg, #28a745, #20c997);
                     color: white;
                 }
                 
                 .btn-join:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+                    transform: translateY(-3px);
+                    box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
                 }
                 
                 .btn-info {
@@ -465,6 +515,10 @@ class ClubInteractive {
                         flex-direction: column;
                         align-items: flex-start;
                         gap: 5px;
+                    }
+
+                    .btn-join {
+                        min-width: 100%;
                     }
                 }
                 
