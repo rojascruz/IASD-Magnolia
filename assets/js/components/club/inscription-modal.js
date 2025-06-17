@@ -1,5 +1,5 @@
 // /assets/js/components/inscription-modal.js
-// Modal mejorado para inscripción a clubs con PDF profesional
+// Modal mejorado para inscripción a clubs con PDF profesional y auto-completado de email
 
 class InscriptionModal {
     constructor() {
@@ -706,26 +706,126 @@ class InscriptionModal {
         }
     }
 
+    // MÉTODO MEJORADO: Manejo de PDF en móvil con auto-completado de email
     async handleMobilePDF(doc, fileName, data) {
         try {
             if (navigator.share) {
                 const pdfBlob = doc.output('blob');
-                const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
                 
-                await navigator.share({
+                // NUEVO: Crear un archivo de texto con información del email para auto-completar
+                const emailContent = this.createEmailContent(data);
+                const emailBlob = new Blob([emailContent], { type: 'text/plain' });
+                
+                const files = [
+                    new File([pdfBlob], fileName, { type: 'application/pdf' }),
+                    new File([emailBlob], 'info_email.txt', { type: 'text/plain' })
+                ];
+                
+                const shareData = {
                     title: 'Inscripción Clubs IASD Magnolia',
-                    text: `Solicitud de inscripción para ${data.children.length} ${data.children.length === 1 ? 'hijo' : 'hijos'}`,
-                    files: [file]
-                });
+                    text: `📧 Para: ${this.email}\n\nSolicitud de inscripción para ${data.children.length} ${data.children.length === 1 ? 'hijo' : 'hijos'}.\n\nPor favor, envíe este PDF a: ${this.email}`,
+                    files: [new File([pdfBlob], fileName, { type: 'application/pdf' })]
+                };
                 
-                console.log('📱 PDF compartido exitosamente');
+                // NUEVO: Detectar si el usuario eligió una app de email
+                try {
+                    await navigator.share(shareData);
+                    console.log('📱 PDF compartido exitosamente');
+                    
+                    // DESPUÉS del share, mostrar instrucciones adicionales para email
+                    setTimeout(() => {
+                        if (window.notifications) {
+                            window.notifications.info(
+                                '📧 Si eligió Email',
+                                `Recuerde escribir en "Para": ${this.email}`,
+                                { duration: 6000 }
+                            );
+                        }
+                    }, 1000);
+                    
+                } catch (shareError) {
+                    console.warn('⚠️ Error compartiendo:', shareError);
+                    // Fallback: descarga tradicional con instrucciones
+                    doc.save(fileName);
+                    this.showEmailInstructions(data);
+                }
             } else {
+                // No hay Web Share API disponible
                 doc.save(fileName);
-                console.log('📄 PDF descargado en móvil:', fileName);
+                this.showEmailInstructions(data);
             }
-        } catch (shareError) {
-            console.warn('⚠️ Error compartiendo:', shareError);
+        } catch (error) {
+            console.warn('⚠️ Error en handleMobilePDF:', error);
             doc.save(fileName);
+            this.showEmailInstructions(data);
+        }
+    }
+
+    // NUEVO MÉTODO: Crear contenido de email estructurado
+    createEmailContent(data) {
+        const clubNames = {
+            'aventureros': 'Los Aventureros (6-9 años)',
+            'conquistadores': 'Conquistadores (10-15 años)',
+            'cadetes': 'Cadetes (16-21 años)'
+        };
+
+        const subject = `Nueva Inscripción - Clubs Juveniles IASD Magnolia (${data.children.length} ${data.children.length === 1 ? 'hijo' : 'hijos'})`;
+        
+        let body = `Para: ${this.email}\n`;
+        body += `Asunto: ${subject}\n\n`;
+        body += `SOLICITUD DE INSCRIPCION A LOS CLUBS JUVENILES\n`;
+        body += `=====================================================\n\n`;
+        
+        body += `INFORMACION DEL PADRE/MADRE/TUTOR:\n`;
+        body += `=======================================\n`;
+        body += `Nombre Completo: ${data.parent.name}\n`;
+        body += `Telefono: ${data.parent.phone}\n`;
+        body += `Email: ${data.parent.email}\n`;
+        body += `Direccion: ${data.parent.address}\n\n`;
+        
+        body += `INFORMACION DE LOS HIJOS (Total: ${data.children.length}):\n`;
+        body += `===============================================\n`;
+        
+        data.children.forEach((child, index) => {
+            body += `\nHIJO/HIJA #${index + 1}\n`;
+            body += `--------------------------------\n`;
+            body += `Nombre Completo: ${child.name}\n`;
+            body += `Fecha de Nacimiento: ${child.birthdate}\n`;
+            body += `Edad: ${child.age} años\n`;
+            body += `Genero: ${child.gender}\n`;
+            body += `Club Solicitado: ${clubNames[child.club] || child.club}\n`;
+            body += `Alergias/Condiciones Medicas: ${child.allergies}\n`;
+        });
+        
+        body += `\n===============================================\n`;
+        body += `Enviado desde: Pagina Web IASD Magnolia\n`;
+        body += `Fecha de solicitud: ${new Date().toLocaleString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        })}\n`;
+        body += `Total de inscripciones: ${data.children.length}\n`;
+        body += `\nGracias por su interes en nuestros clubs juveniles!\n`;
+        body += `Nos pondremos en contacto pronto para confirmar la inscripcion.\n\n`;
+        body += `Bendiciones,\nIglesia Adventista del Septimo Dia Magnolia\n`;
+
+        return body;
+    }
+
+    // NUEVO MÉTODO: Mostrar instrucciones para email manual
+    showEmailInstructions(data) {
+        const message = `📧 Para enviar por email:\n\n• Para: ${this.email}\n• Asunto: Nueva Inscripción - Clubs Juveniles\n• Adjunte el PDF descargado\n\n¡Gracias por su inscripción!`;
+        
+        if (window.notifications) {
+            window.notifications.info(
+                '📧 Instrucciones de Email',
+                `Para enviar por email, use: ${this.email}`,
+                { duration: 8000 }
+            );
+        } else {
+            alert(message);
         }
     }
 
@@ -1010,5 +1110,5 @@ class InscriptionModal {
 }
 
 // Inicializar
-console.log('🔄 Cargando Inscription Modal con PDF profesional...');
+console.log('🔄 Cargando Inscription Modal con auto-completado de email...');
 window.inscriptionModal = new InscriptionModal();
