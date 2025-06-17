@@ -1,0 +1,47 @@
+<!-- /assets/templates/components/club/pdf-generator/pdf-generator.html -->
+<!-- Template del generador de PDF -->
+
+<template id="pdf-preview-modal-template">
+    <div class="pdf-preview-content">
+        <div class="pdf-preview-header">
+            <h3 class="pdf-preview-title">📄 Solicitud de Inscripción Generada</h3>
+            <button class="pdf-preview-close" id="pdf-close-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="pdf-preview-body">
+            <div class="pdf-preview-info">
+                <h3>✅ PDF Generado Exitosamente</h3>
+                <p>Su solicitud de inscripción ha sido preparada en formato PDF profesional. Puede descargar el archivo o enviarlo por email.</p>
+            </div>
+            
+            <div class="pdf-loading" id="pdf-loading">
+                <div class="pdf-spinner"></div>
+                <div class="pdf-loading-text">Generando PDF...</div>
+            </div>
+            
+            <div class="pdf-actions" id="pdf-actions">
+                <button class="pdf-btn pdf-btn-download" id="pdf-download-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                    Descargar PDF
+                </button>
+                
+                <button class="pdf-btn pdf-btn-email" id="pdf-email-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                    Enviar por Email
+                </button>
+                
+                <button class="pdf-btn pdf-btn-cancel" id="pdf-cancel-btn">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
