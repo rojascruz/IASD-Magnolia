@@ -10,9 +10,14 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     
     <!-- Estilos CSS -->
-    <link rel="stylesheet" href="assets/css/index/style.css">
-    <link rel="stylesheet" href="assets/css/index/responsive.css">
-    <link rel="stylesheet" href="assets/css/club/club.css">
+    <link rel="stylesheet" href="/assets/css/page/index/style.css">
+    <link rel="stylesheet" href="/assets/css/page/index/responsive.css">
+    <link rel="stylesheet" href="/assets/css/page/club/club.css">
+    <!-- CSS de componentes -->
+    <link rel="stylesheet" href="/assets/css/components/club/notification-system/notification-system.css">
+    <link rel="stylesheet" href="/assets/css/components/club/inscription-modal/inscription-modal.css">
+    <link rel="stylesheet" href="/assets/css/components/club/club-interative/club-interative.css">
+    <link rel="stylesheet" href="/assets/css/components/club/pdf-generator/pdf-generator.css">
     
     <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -188,396 +193,61 @@
 
     <!-- Footer será cargado dinámicamente desde index.html -->
     <div id="footer-container"></div>
+    <!-- Genera los pdf -->
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <!-- Scripts -->
+    <!-- Componentes (en orden de dependencias) -->
+    <script src="/assets/js/components/club/notification-system.js"></script>
+    <!-- <script src="/assets/js/components/club/pdf-generator.js"></script> -->
+    <script src="/assets/js/components/club/inscription-modal.js"></script>
+    <script src="/assets/js/components/club/club-interative.js"></script>
+
+    <!-- Scripts opcionales -->
+    <script src="/assets/js/components/index/footer-loader.js"></script>
+    <script src="/assets/js/components/index/main.js"></script>
+    <script src="/assets/js/components/index/copy-coordinates.js"></script>
 
 
-<!-- Sistema de notificaciones  -->
-<script>
-// notification-system.js inline para mejor compatibilidad
-class NotificationSystem {
-    constructor() {
-        this.container = null;
-        this.notifications = new Map();
-        this.notificationCounter = 0;
-        this.init();
-    }
 
-    init() {
-        this.createContainer();
-        this.addStyles();
-        console.log('🔔 Sistema de notificaciones inicializado');
-    }
-
-    createContainer() {
-        this.container = document.createElement('div');
-        this.container.className = 'notification-container';
-        this.container.id = 'notification-container';
-        document.body.appendChild(this.container);
-    }
-
-    addStyles() {
-        if (document.getElementById('notification-styles')) {
-            return;
-        }
-
-        const styles = `
-            <style id="notification-styles">
-                .notification-container {
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    z-index: 10000;
-                    pointer-events: none;
-                    max-width: 400px;
-                    width: 100%;
-                }
-
-                .notification {
-                    background: white;
-                    border-radius: 16px;
-                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-                    margin-bottom: 16px;
-                    padding: 20px;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    backdrop-filter: blur(20px);
-                    pointer-events: auto;
-                    position: relative;
-                    overflow: hidden;
-                    animation: slideInNotification 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-                    transform-origin: top right;
-                }
-
-                @keyframes slideInNotification {
-                    from {
-                        opacity: 0;
-                        transform: translateX(100%) scale(0.8);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateX(0) scale(1);
-                    }
-                }
-
-                .notification.notification-success {
-                    border-left: 5px solid #28a745;
-                    background: linear-gradient(135deg, #ffffff 0%, #f8fff9 100%);
-                }
-
-                .notification.notification-error {
-                    border-left: 5px solid #dc3545;
-                    background: linear-gradient(135deg, #ffffff 0%, #fff8f8 100%);
-                }
-
-                .notification.notification-info {
-                    border-left: 5px solid #007bff;
-                    background: linear-gradient(135deg, #ffffff 0%, #f8fcff 100%);
-                }
-
-                .notification-header {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    margin-bottom: 12px;
-                }
-
-                .notification-icon {
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 24px;
-                    margin-right: 16px;
-                    flex-shrink: 0;
-                }
-
-                .notification-success .notification-icon {
-                    background: linear-gradient(135deg, #28a745, #20c997);
-                    color: white;
-                }
-
-                .notification-error .notification-icon {
-                    background: linear-gradient(135deg, #dc3545, #c82333);
-                    color: white;
-                }
-
-                .notification-info .notification-icon {
-                    background: linear-gradient(135deg, #007bff, #0056b3);
-                    color: white;
-                }
-
-                .notification-content {
-                    flex: 1;
-                }
-
-                .notification-title {
-                    font-weight: 700;
-                    font-size: 1.1rem;
-                    margin: 0 0 8px 0;
-                    color: #2c3e50;
-                    font-family: 'Montserrat', sans-serif;
-                }
-
-                .notification-message {
-                    font-size: 0.95rem;
-                    color: #6c757d;
-                    line-height: 1.5;
-                    margin: 0;
-                }
-
-                .notification-close {
-                    background: none;
-                    border: none;
-                    color: #6c757d;
-                    font-size: 20px;
-                    cursor: pointer;
-                    padding: 4px;
-                    border-radius: 50%;
-                    width: 32px;
-                    height: 32px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: all 0.3s ease;
-                    margin-left: 12px;
-                    flex-shrink: 0;
-                }
-
-                .notification-close:hover {
-                    background: rgba(108, 117, 125, 0.1);
-                    color: #495057;
-                    transform: scale(1.1);
-                }
-
-                .notification-actions {
-                    margin-top: 16px;
-                    display: flex;
-                    gap: 12px;
-                    justify-content: flex-end;
-                }
-
-                .notification-btn {
-                    padding: 8px 16px;
-                    border: none;
-                    border-radius: 8px;
-                    font-weight: 600;
-                    font-size: 0.9rem;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-                }
-
-                .notification-btn-primary {
-                    background: linear-gradient(135deg, #007bff, #0056b3);
-                    color: white;
-                }
-
-                .notification-btn-primary:hover {
-                    transform: translateY(-1px);
-                    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-                }
-
-                .notification-btn-secondary {
-                    background: #f8f9fa;
-                    color: #6c757d;
-                    border: 1px solid #dee2e6;
-                }
-
-                .notification-btn-secondary:hover {
-                    background: #e9ecef;
-                    color: #495057;
-                }
-
-                @media (max-width: 768px) {
-                    .notification-container {
-                        top: 10px;
-                        right: 10px;
-                        left: 10px;
-                        max-width: none;
-                    }
-                }
-
-                .notification.notification-exit {
-                    animation: slideOutNotification 0.3s ease-in forwards;
-                }
-
-                @keyframes slideOutNotification {
-                    from {
-                        opacity: 1;
-                        transform: translateX(0) scale(1);
-                        max-height: 200px;
-                    }
-                    to {
-                        opacity: 0;
-                        transform: translateX(100%) scale(0.8);
-                        max-height: 0;
-                        margin-bottom: 0;
-                        padding-top: 0;
-                        padding-bottom: 0;
-                    }
-                }
-            </style>
-        `;
-
-        document.head.insertAdjacentHTML('beforeend', styles);
-    }
-
-    show(options = {}) {
-        const {
-            type = 'info',
-            title = '',
-            message = '',
-            duration = 5000,
-            actions = [],
-            persistent = false
-        } = options;
-
-        const notificationId = ++this.notificationCounter;
+    <!-- Script de verificación final -->
+    <script>
+        window.addEventListener('load', function() {
+    console.log('🎯 Página completamente cargada');
+    
+    // Verificar que todo funcione después de 1 segundo
+    setTimeout(function() {
+        const btn = document.getElementById('open-inscription');
+        const hasNotifications = !!window.notifications;
+        const hasInscriptionModal = !!window.inscriptionModal;
+        const hasClubInteractive = !!window.clubInteractive;
+        const hasPdfGenerator = !!window.pdfGenerator;
         
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.setAttribute('data-id', notificationId);
-
-        const iconMap = {
-            success: '✅',
-            error: '❌',
-            info: 'ℹ️'
-        };
-
-        let actionsHTML = '';
-        if (actions.length > 0) {
-            actionsHTML = `
-                <div class="notification-actions">
-                    ${actions.map((action, index) => `
-                        <button class="notification-btn notification-btn-${action.type || 'secondary'}" 
-                                data-action="${index}">
-                            ${action.icon ? `<span>${action.icon}</span>` : ''}
-                            ${action.text}
-                        </button>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        notification.innerHTML = `
-            <div class="notification-header">
-                <div style="display: flex; align-items: center;">
-                    <div class="notification-icon">
-                        ${iconMap[type] || iconMap.info}
-                    </div>
-                    <div class="notification-content">
-                        ${title ? `<h4 class="notification-title">${title}</h4>` : ''}
-                        ${message ? `<p class="notification-message">${message}</p>` : ''}
-                    </div>
-                </div>
-                <button class="notification-close" data-close="${notificationId}">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                    </svg>
-                </button>
-            </div>
-            ${actionsHTML}
-        `;
-
-        this.container.appendChild(notification);
-        this.notifications.set(notificationId, notification);
-
-        // Event listeners
-        const closeBtn = notification.querySelector(`[data-close="${notificationId}"]`);
-        closeBtn.addEventListener('click', () => this.hide(notificationId));
-
-        // Action buttons
-        const actionBtns = notification.querySelectorAll('[data-action]');
-        actionBtns.forEach((btn, index) => {
-            btn.addEventListener('click', () => {
-                if (actions[index].callback) {
-                    actions[index].callback();
-                }
-                if (actions[index].closeOnClick !== false) {
-                    this.hide(notificationId);
-                }
-            });
-        });
-
-        // Auto-hide
-        if (!persistent && duration > 0) {
-            setTimeout(() => this.hide(notificationId), duration);
-        }
-
-        return notificationId;
-    }
-
-    hide(notificationId) {
-        const notification = this.notifications.get(notificationId);
-        if (notification) {
-            notification.classList.add('notification-exit');
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-                this.notifications.delete(notificationId);
-            }, 300);
-        }
-    }
-
-    success(title, message, options = {}) {
-        return this.show({
-            type: 'success',
-            title,
-            message,
-            ...options
-        });
-    }
-
-    error(title, message, options = {}) {
-        return this.show({
-            type: 'error',
-            title,
-            message,
-            ...options
-        });
-    }
-
-    info(title, message, options = {}) {
-        return this.show({
-            type: 'info',
-            title,
-            message,
-            ...options
-        });
-    }
-}
-
-// Crear instancia global
-window.notifications = new NotificationSystem();
-console.log('🔔 Sistema de notificaciones cargado correctamente');
-</script>
-
-<script src="assets/js/club/club-interative.js"></script>
-<script src="assets/js/club/incription-modal.js"></script>
-
-<!-- Scripts opcionales si los tienes -->
-<script src="assets/js/index/footer-loader.js"></script>
-<script src="assets/js/index/main.js"></script>
-<script src="assets/js/index/copy-coordinates.js"></script>
-
-<script>
-    // Script final de verificación
-    window.addEventListener('load', () => {
-        console.log('🎯 Página completamente cargada');
+        console.log('📊 Estado detallado de componentes:');
+        console.log('- Botón inscripción:', !!btn);
+        console.log('- Notificaciones:', hasNotifications);
+        console.log('- Modal inscripción:', hasInscriptionModal);
+        console.log('- Club interactive:', hasClubInteractive);
         
-        // Verificar que todo funcione después de 1 segundo
-        setTimeout(() => {
-            const btn = document.getElementById('open-inscription');
-            if (btn && window.inscriptionModal && window.notifications) {
-                console.log('✅ Todo funcionando correctamente');
-            } else {
-                console.error('❌ Algo no está funcionando correctamente');
+        // Verificar cuáles componentes faltan específicamente
+        const missingComponents = [];
+        if (!btn) missingComponents.push('Botón de inscripción');
+        if (!hasNotifications) missingComponents.push('Sistema de notificaciones');
+        if (!hasInscriptionModal) missingComponents.push('Modal de inscripción');
+        if (!hasClubInteractive) missingComponents.push('Club interactive');
+        
+        if (missingComponents.length === 0) {
+            console.log('✅ Todos los componentes funcionando correctamente');
+        } else {
+            console.warn('⚠️ Componentes faltantes:', missingComponents.join(', '));
+            console.log('ℹ️ Nota: Esto no afecta la funcionalidad principal del modal de inscripción');
+            
+            // Verificar si al menos el modal funciona (que es lo importante)
+            if (hasInscriptionModal && btn) {
+                console.log('✅ Funcionalidad principal (modal de inscripción) está funcionando');
             }
-        }, 1000);
-    });
-</script>
+        }
+    }, 1000);
+});
+    </script>
 </body>
 </html>
