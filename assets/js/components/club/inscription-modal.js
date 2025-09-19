@@ -836,54 +836,39 @@ class InscriptionModal {
         return `Inscripcion_Clubs_${firstName}_${childrenCount}hijos_${date}.pdf`;
     }
 
-    // MÉTODO MEJORADO: Envía email con información sobre el PDF
+    // MÉTODO PROFESIONAL: Envía email con mensaje corto y profesional
     sendEmailWithPDFInfo(data, pdfGenerated) {
-        const clubNames = {
-            'aventureros': 'Los Aventureros (6-9 años)',
-            'conquistadores': 'Conquistadores (10-15 años)',
-            'cadetes': 'Cadetes (16-21 años)'
-        };
+        console.log('📧 Preparando email profesional...');
+        
+        // Crear mensaje profesional y conciso
+        const subject = 'Inscripción Club Juvenil - IASD Magnolia';
+        
+        // Determinar nombres de los hijos para el mensaje
+        const childrenNames = data.children.map(child => child.name).join(', ');
+        const childCount = data.children.length;
+        const childText = childCount === 1 ? 'hijo/hija' : 'hijos/hijas';
+        
+        // MENSAJE PROFESIONAL CORTO
+        const body = `Estimados hermanos,
 
-        const subject = `Nueva Inscripción - Clubs Juveniles IASD Magnolia (${data.children.length} ${data.children.length === 1 ? 'hijo' : 'hijos'})`;
-        
-        // TU FORMATO EXACTO DEL EMAIL (SIN EMOJIS)
-        let body = `SOLICITUD DE INSCRIPCION A LOS CLUBS JUVENILES\n`;
-        body += `=====================================================\n\n`;
-        
-        body += `INFORMACION DEL PADRE/MADRE/TUTOR:\n`;
-        body += `=======================================\n`;
-        body += `Nombre Completo: ${data.parent.name}\n`;
-        body += `Telefono: ${data.parent.phone}\n`;
-        body += `Email: ${data.parent.email}\n`;
-        body += `Direccion: ${data.parent.address}\n\n`;
-        
-        body += `INFORMACION DE LOS HIJOS (Total: ${data.children.length}):\n`;
-        body += `===============================================\n`;
-        
-        data.children.forEach((child, index) => {
-            body += `\nHIJO/HIJA #${index + 1}\n`;
-            body += `--------------------------------\n`;
-            body += `Nombre Completo: ${child.name}\n`;
-            body += `Fecha de Nacimiento: ${child.birthdate}\n`;
-            body += `Edad: ${child.age} años\n`;
-            body += `Genero: ${child.gender}\n`;
-            body += `Club Solicitado: ${clubNames[child.club] || child.club}\n`;
-            body += `Alergias/Condiciones Medicas: ${child.allergies}\n`;
-        });
-        
-        body += `\n===============================================\n`;
-        body += `Enviado desde: Pagina Web IASD Magnolia\n`;
-        body += `Fecha de solicitud: ${new Date().toLocaleString('es-ES', {
+Saludos cordiales. Envío el PDF con la inscripción de su ${childText} ${childrenNames} para el club juvenil.
+
+El PDF contiene toda la información detallada de la inscripción. Por favor, revisen la información y nos pondremos en contacto pronto para confirmar la participación.
+
+Que Dios les bendiga,
+
+Iglesia Adventista del Séptimo Día Magnolia
+Bayamón, Puerto Rico
+
+---
+Enviado desde: www.iasdmagnolia.org
+Fecha: ${new Date().toLocaleString('es-ES', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
-        })}\n`;
-        body += `Total de inscripciones: ${data.children.length}\n`;
-        body += `\nGracias por su interes en nuestros clubs juveniles!\n`;
-        body += `Nos pondremos en contacto pronto para confirmar la inscripcion.\n\n`;
-        body += `Bendiciones,\nIglesia Adventista del Septimo Dia Magnolia\n`;
+        })}`;
         
         try {
             const mailtoLink = `mailto:${this.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -891,32 +876,68 @@ class InscriptionModal {
             // Log para debugging
             console.log('📧 Email destinatario:', this.email);
             console.log('📋 Asunto:', subject);
-            console.log('📝 Contenido preparado para email');
+            console.log('📝 Mensaje profesional preparado');
             console.log('📄 PDF generado:', pdfGenerated ? 'SÍ ✅' : 'NO ⚠️');
             
             // Intentar abrir el cliente de email
             window.location.href = mailtoLink;
             
+            // Mensaje de instrucciones profesional
+            let message = '';
+            if (pdfGenerated) {
+                message = `¡Excelente! Se ha generado el PDF profesional y preparado el email.
+
+PRÓXIMOS PASOS:
+1. ✅ El PDF se descargó automáticamente
+2. 📧 Se abrió su cliente de correo con el mensaje
+3. 📎 Adjunte manualmente el PDF descargado
+4. ✉️ Envíe el correo
+
+El mensaje ya está preparado profesionalmente para enviar.`;
+            } else {
+                message = `Email preparado para ${childCount} ${childText}. 
+
+⚠️ Nota: El PDF no se pudo generar automáticamente. 
+Por favor incluya la información en el correo o intente nuevamente.`;
+            }
+            
+            if (window.notifications) {
+                window.notifications.success(
+                    'Email Profesional Preparado',
+                    message,
+                    {
+                        duration: 12000
+                    }
+                );
+            } else {
+                alert(`Email Profesional Preparado\n\n${message}`);
+            }
+            
+            this.closeModal();
+            this.resetForm();
+            
+            console.log('✅ Proceso completado - PDF:', pdfGenerated ? 'Generado ✅' : 'No disponible ⚠️', '+ Email profesional preparado para:', this.email);
+
             // Mostrar notificación de éxito
             const childrenText = data.children.length === 1 ? '1 hijo' : `${data.children.length} hijos`;
             
-            let message = '';
+            let message2 = '';
             if (pdfGenerated) {
-                message = `Perfecto! Se generó y descargó el PDF profesional, y se preparó el email para ${childrenText}. Revise su cliente de correo para enviar la solicitud.`;
+                message2 = `Perfecto! Se generó y descargó el PDF profesional, y se preparó el email para ${childrenText}. Revise su cliente de correo para enviar la solicitud.`;
             } else {
-                message = `Email preparado para ${childrenText}. Se ha abierto su cliente de correo para enviar la solicitud. (PDF no disponible en este momento)`;
+                message2 = `Email preparado para ${childrenText}. Se ha abierto su cliente de correo para enviar la solicitud. (PDF no disponible en este momento)`;
             }
             
             if (window.notifications) {
                 window.notifications.success(
                     'Inscripción Procesada!',
-                    message,
+                    message2,
                     {
                         duration: 8000
                     }
                 );
             } else {
-                alert(`Inscripción Procesada!\n\n${message}`);
+                alert(`Inscripción Procesada!\n\n${message2}`);
             }
             
             this.closeModal();
@@ -935,7 +956,7 @@ class InscriptionModal {
                     }
                 );
             } else {
-                alert(`Error al preparar el email.\n\nPor favor, envíe un email manualmente a: ${this.email}`);
+                alert(`Error al preparar el email.\n\nEnvíe manualmente a: ${this.email}\nAsunto: ${subject}\nY adjunte el PDF descargado.`);
             }
         }
     }
