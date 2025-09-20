@@ -21,6 +21,14 @@ class InscriptionModal {
         await this.loadTemplates();
         this.createModal();
         this.attachEventListeners();
+        
+        // Escuchar cambios de idioma
+        document.addEventListener('languageChanged', () => {
+            if (this.modal && this.modal.classList.contains('active')) {
+                setTimeout(() => this.applyModalTranslations(), 100);
+            }
+        });
+        
         console.log('✅ Inscription Modal inicializado correctamente');
     }
 
@@ -136,6 +144,28 @@ class InscriptionModal {
     }
 
     createChildForm(childNumber) {
+        // Usar el template HTML con data-translate en lugar del JavaScript hardcodeado
+        const childFormTemplate = this.templates.get('child-form-template');
+        const removeButtonTemplate = this.templates.get('remove-button-template');
+        
+        if (childFormTemplate) {
+            // Crear el botón de remover solo si no es el primer hijo
+            const removeButton = childNumber > 1 && removeButtonTemplate 
+                ? this.replaceTemplate(removeButtonTemplate, { childNumber })
+                : '';
+                
+            // Reemplazar las variables del template
+            return this.replaceTemplate(childFormTemplate, {
+                childNumber,
+                removeButton
+            });
+        }
+        
+        // Fallback al método anterior si no hay template
+        return this.createChildFormFallback(childNumber);
+    }
+
+    createChildFormFallback(childNumber) {
         return `
             <div class="child-form" data-child="${childNumber}">
                 <div class="child-header">
@@ -250,15 +280,21 @@ class InscriptionModal {
     }
 
     buildFormActions() {
+        const template = this.templates.get('form-actions-template');
+        if (template) {
+            return template;
+        }
+        
+        // Fallback con data-translate
         return `
             <div class="form-actions">
-                <button type="button" class="btn-cancel" id="cancel-btn">
+                <button type="button" class="btn-cancel" id="cancel-btn" data-translate="cancel-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                     </svg>
                     Cancelar
                 </button>
-                <button type="submit" class="btn-submit">
+                <button type="submit" class="btn-submit" id="submit-btn" data-translate="submit-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
                     </svg>
@@ -357,7 +393,14 @@ class InscriptionModal {
         }
 
         this.addValidationToNewChild(childFormElement);
-        console.log(`➕ Hijo #${this.childrenCount} agregado`);
+        
+        // Aplicar traducciones al nuevo formulario de hijo
+        this.applyModalTranslations();
+        
+        // Reconfigurar calculadora inmediatamente para el nuevo hijo
+        this.reconfigureAgeCalculator();
+        
+        console.log(`➕ Hijo #${this.childrenCount} agregado y configurado`);
     }
 
     removeChild(childNumber) {
@@ -366,8 +409,84 @@ class InscriptionModal {
             childForm.style.animation = 'slideOutChild 0.3s ease-out forwards';
             setTimeout(() => {
                 childForm.remove();
-                console.log(`➖ Hijo #${childNumber} removido`);
+                this.renumberChildren(); // Renumerar después de eliminar
+                console.log(`➖ Hijo #${childNumber} removido y renumerado`);
             }, 300);
+        }
+    }
+
+    // NUEVA FUNCIÓN: Renumerar todos los hijos dinámicamente
+    renumberChildren() {
+        const container = this.modal.querySelector('#children-container');
+        const childForms = container.querySelectorAll('.child-form');
+        
+        childForms.forEach((childForm, index) => {
+            const newNumber = index + 1;
+            const oldNumber = childForm.getAttribute('data-child');
+            
+            // Actualizar data-child
+            childForm.setAttribute('data-child', newNumber);
+            
+            // Actualizar título
+            const title = childForm.querySelector('h4');
+            if (title) {
+                title.textContent = `Hijo/Hija #${newNumber}`;
+            }
+            
+            // Actualizar nombres de los campos
+            this.updateFieldNames(childForm, oldNumber, newNumber);
+            
+            // Actualizar botón de remover
+            const removeBtn = childForm.querySelector('.remove-child-btn');
+            if (removeBtn) {
+                removeBtn.setAttribute('data-child', newNumber);
+                // Mostrar/ocultar botón según sea el primer hijo
+                removeBtn.style.display = newNumber === 1 ? 'none' : 'flex';
+            }
+        });
+        
+        // Actualizar contador
+        this.childrenCount = childForms.length;
+        
+        // Reconfigurar validaciones y calculadora de edad
+        this.setupValidationForAllChildren();
+        this.reconfigureAgeCalculator();
+        
+        console.log(`🔄 Hijos renumerados: ${this.childrenCount} hijos total`);
+    }
+
+    // NUEVA FUNCIÓN: Actualizar nombres de campos
+    updateFieldNames(childForm, oldNumber, newNumber) {
+        const fields = childForm.querySelectorAll('input, select');
+        fields.forEach(field => {
+            if (field.name) {
+                field.name = field.name.replace(`_${oldNumber}`, `_${newNumber}`);
+                
+                // Remover data-configured para que se reconfigure la calculadora
+                if (field.hasAttribute('data-configured')) {
+                    field.removeAttribute('data-configured');
+                }
+            }
+        });
+    }
+
+    // NUEVA FUNCIÓN: Reconfigurar calculadora de edad después de cambios
+    reconfigureAgeCalculator() {
+        console.log('🔄 Reconfigurando calculadora de edad...');
+        
+        // Disparar evento para que la calculadora se reconfigure
+        const event = new CustomEvent('childrenChanged');
+        document.dispatchEvent(event);
+        
+        // También ejecutar directamente si la función está disponible
+        if (window.configurarCalculadoraEdad) {
+            console.log('✅ Función configurarCalculadoraEdad encontrada, ejecutando...');
+            setTimeout(() => {
+                window.configurarCalculadoraEdad();
+                console.log('🎯 Calculadora reconfigurada');
+            }, 100);
+        } else {
+            console.warn('⚠️ window.configurarCalculadoraEdad no está disponible');
         }
     }
 
@@ -375,9 +494,45 @@ class InscriptionModal {
         if (this.modal) {
             this.modal.classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            // Aplicar traducciones si el language manager está disponible
+            this.applyModalTranslations();
+            
             console.log('📋 Modal de inscripción abierto');
         } else {
             console.error('❌ Modal no encontrado');
+        }
+    }
+
+    applyModalTranslations() {
+        // Verificar si existe el language manager
+        if (window.languageManager && typeof window.languageManager.applyTranslations === 'function') {
+            // Aplicar traducciones al modal específicamente
+            window.languageManager.applyTranslations(this.modal);
+            
+            // También forzar traducciones en elementos select dinámicos
+            if (typeof window.languageManager.getCurrentTranslations === 'function') {
+                const currentTranslations = window.languageManager.getCurrentTranslations();
+                this.modal.querySelectorAll('select option[data-translate]').forEach(option => {
+                    const key = option.getAttribute('data-translate');
+                    if (key && currentTranslations[key]) {
+                        option.textContent = currentTranslations[key];
+                    }
+                });
+            }
+            
+            console.log('🌐 Traducciones aplicadas al modal');
+        } else if (window.LanguageManager) {
+            // Fallback para la clase LanguageManager
+            try {
+                const languageManager = new window.LanguageManager();
+                languageManager.applyTranslations(this.modal);
+                console.log('🌐 Traducciones aplicadas al modal (fallback)');
+            } catch (error) {
+                console.warn('⚠️ No se pudieron aplicar las traducciones al modal:', error);
+            }
+        } else {
+            console.warn('⚠️ Language manager no disponible para el modal');
         }
     }
 
@@ -447,16 +602,21 @@ class InscriptionModal {
     // NUEVO MÉTODO: Procesa la inscripción generando PDF y enviando email
     async processInscription(data) {
         try {
+            // Verificar disponibilidad del nuevo generador
+            console.log('🔍 Verificando generadores de PDF disponibles:');
+            console.log('- window.generatePDFWithLogo:', !!window.generatePDFWithLogo);
+            console.log('- window.pdfGeneratorWithLogo:', !!window.pdfGeneratorWithLogo);
+            
             // Mostrar notificación de procesamiento
             if (window.notifications) {
                 window.notifications.info(
                     '📄 Procesando Inscripción...',
-                    'Generando PDF y preparando email...',
+                    'Generando PDF profesional y preparando email...',
                     { duration: 3000 }
                 );
             }
 
-            // Intentar generar PDF
+            // Intentar generar PDF con el nuevo sistema
             const pdfGenerated = await this.tryGeneratePDF(data);
             
             // Siempre enviar email (con información sobre si se generó PDF)
@@ -469,239 +629,40 @@ class InscriptionModal {
         }
     }
 
-    // MÉTODO PROFESIONAL: Genera PDF limpio y formal
+    // MÉTODO ACTUALIZADO: Usa el nuevo generador de PDF profesional
     async tryGeneratePDF(data) {
         try {
-            console.log('🔍 Verificando disponibilidad de jsPDF...');
+            console.log('🎯 Usando nuevo generador de PDF profesional...');
             
-            // NUEVA FORMA: Detección más robusta de jsPDF
-            let doc = null;
-            
-            // Método 1: window.jspdf.jsPDF (más común)
-            if (window.jspdf && window.jspdf.jsPDF) {
-                doc = new window.jspdf.jsPDF();
-                console.log('✅ jsPDF encontrado en window.jspdf.jsPDF');
-            }
-            // Método 2: window.jsPDF (versiones antiguas)
-            else if (window.jsPDF) {
-                doc = new window.jsPDF();
-                console.log('✅ jsPDF encontrado en window.jsPDF');
-            }
-            // Método 3: jsPDF global
-            else if (typeof jsPDF !== 'undefined') {
-                doc = new jsPDF();
-                console.log('✅ jsPDF encontrado como global');
-            }
-
-            if (!doc) {
-                console.warn('⚠️ jsPDF no disponible, omitiendo generación de PDF');
-                return false;
-            }
-
-            console.log('📄 Generando PDF profesional...');
-            
-            // Configuración del documento
-            const pageWidth = doc.internal.pageSize.width;
-            const pageHeight = doc.internal.pageSize.height;
-            const margin = 25;
-            let yPos = margin;
-            
-            // Función auxiliar para agregar texto limpio
-            const addText = (text, fontSize = 11, style = 'normal', color = [0, 0, 0], align = 'left') => {
-                doc.setFontSize(fontSize);
-                doc.setFont('helvetica', style);
-                doc.setTextColor(...color);
-                
-                const lines = doc.splitTextToSize(text, pageWidth - (margin * 2));
-                
-                // Verificar si necesitamos una nueva página
-                if (yPos + (lines.length * fontSize * 0.6) > pageHeight - margin) {
-                    doc.addPage();
-                    yPos = margin;
-                }
-                
-                if (align === 'center') {
-                    const textWidth = doc.getTextWidth(lines[0]);
-                    const x = (pageWidth - textWidth) / 2;
-                    doc.text(lines, x, yPos);
+            // PRIORIDAD 1: Usar el nuevo generador profesional con logo
+            if (window.generatePDFWithLogo) {
+                console.log('✅ Generador profesional disponible, generando PDF...');
+                const success = await window.generatePDFWithLogo(data);
+                if (success) {
+                    console.log('🎨 ¡PDF profesional generado exitosamente!');
+                    return true;
                 } else {
-                    doc.text(lines, margin, yPos);
+                    console.warn('⚠️ El generador profesional falló');
                 }
-                
-                yPos += lines.length * fontSize * 0.6 + 3;
-            };
-            
-            const addLine = (color = [200, 200, 200], thickness = 0.5) => {
-                doc.setDrawColor(...color);
-                doc.setLineWidth(thickness);
-                doc.line(margin, yPos, pageWidth - margin, yPos);
-                yPos += 8;
-            };
-            
-            const addSpace = (space = 10) => {
-                yPos += space;
-            };
-
-            // ==================== ENCABEZADO PROFESIONAL ====================
-            
-            // Logo/Título principal
-            addText('IGLESIA ADVENTISTA DEL SÉPTIMO DÍA', 18, 'bold', [0, 51, 102], 'center');
-            addText('MAGNOLIA BAYAMÓN', 14, 'bold', [0, 51, 102], 'center');
-            addSpace(8);
-            addLine([0, 51, 102], 1);
-            addSpace(5);
-            
-            // Título del documento
-            addText('SOLICITUD DE INSCRIPCIÓN A LOS CLUBS JUVENILES', 16, 'bold', [51, 51, 51], 'center');
-            addSpace(15);
-            
-            // Información de fecha
-            const fechaSolicitud = new Date().toLocaleString('es-ES', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            addText(`Fecha de solicitud: ${fechaSolicitud}`, 10, 'normal', [100, 100, 100]);
-            addText(`Número de referencia: INS-${Date.now().toString().slice(-6)}`, 10, 'normal', [100, 100, 100]);
-            addSpace(20);
-            
-            // ==================== INFORMACIÓN DEL PADRE/MADRE/TUTOR ====================
-            
-            addText('INFORMACIÓN DEL PADRE/MADRE/TUTOR', 14, 'bold', [0, 51, 102]);
-            addLine([0, 51, 102]);
-            addSpace(5);
-            
-            // Crear tabla de información del padre
-            const parentInfo = [
-                ['Nombre Completo:', data.parent.name],
-                ['Teléfono:', data.parent.phone],
-                ['Correo Electrónico:', data.parent.email],
-                ['Dirección:', data.parent.address]
-            ];
-            
-            parentInfo.forEach(([label, value]) => {
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(11);
-                doc.setTextColor(51, 51, 51);
-                doc.text(label, margin, yPos);
-                
-                doc.setFont('helvetica', 'normal');
-                doc.setTextColor(0, 0, 0);
-                const labelWidth = doc.getTextWidth(label);
-                doc.text(value, margin + labelWidth + 5, yPos);
-                
-                yPos += 15;
-            });
-            
-            addSpace(15);
-            
-            // ==================== INFORMACIÓN DE LOS HIJOS ====================
-            
-            addText(`INFORMACIÓN DE LOS HIJOS (Total: ${data.children.length})`, 14, 'bold', [0, 51, 102]);
-            addLine([0, 51, 102]);
-            addSpace(10);
-            
-            const clubNames = {
-                'aventureros': 'Los Aventureros (6-9 años)',
-                'conquistadores': 'Conquistadores (10-15 años)',
-                'cadetes': 'Cadetes (16-21 años)'
-            };
-            
-            data.children.forEach((child, index) => {
-                // Título del hijo
-                addText(`HIJO/HIJA #${index + 1}`, 12, 'bold', [34, 139, 34]);
-                addSpace(5);
-                
-                // Información del hijo en formato tabla
-                const childInfo = [
-                    ['Nombre Completo:', child.name],
-                    ['Fecha de Nacimiento:', child.birthdate],
-                    ['Edad:', `${child.age} años`],
-                    ['Género:', child.gender],
-                    ['Club Solicitado:', clubNames[child.club] || child.club]
-                ];
-                
-                childInfo.forEach(([label, value]) => {
-                    doc.setFont('helvetica', 'bold');
-                    doc.setFontSize(10);
-                    doc.setTextColor(51, 51, 51);
-                    doc.text(label, margin + 10, yPos);
-                    
-                    doc.setFont('helvetica', 'normal');
-                    doc.setTextColor(0, 0, 0);
-                    const labelWidth = doc.getTextWidth(label);
-                    doc.text(value, margin + 10 + labelWidth + 5, yPos);
-                    
-                    yPos += 12;
-                });
-                
-                // Alergias/Condiciones (si existen y no son N/A)
-                if (child.allergies && child.allergies !== 'N/A' && child.allergies.trim()) {
-                    doc.setFont('helvetica', 'bold');
-                    doc.setFontSize(10);
-                    doc.setTextColor(51, 51, 51);
-                    doc.text('Alergias/Condiciones Médicas:', margin + 10, yPos);
-                    yPos += 12;
-                    
-                    doc.setFont('helvetica', 'normal');
-                    doc.setTextColor(0, 0, 0);
-                    const allergiesLines = doc.splitTextToSize(child.allergies, pageWidth - (margin * 2) - 20);
-                    doc.text(allergiesLines, margin + 15, yPos);
-                    yPos += allergiesLines.length * 12 + 5;
-                }
-                
-                // Línea separadora entre hijos (si hay más de uno)
-                if (index < data.children.length - 1) {
-                    addSpace(10);
-                    addLine([220, 220, 220], 0.3);
-                    addSpace(10);
-                }
-            });
-            
-            addSpace(20);
-            
-            // ==================== PIE DEL DOCUMENTO ====================
-            
-            addLine([0, 51, 102]);
-            addSpace(10);
-            
-            addText('INFORMACIÓN ADICIONAL', 12, 'bold', [0, 51, 102]);
-            addSpace(8);
-            
-            addText('Enviado desde: Página Web IASD Magnolia', 9, 'normal', [100, 100, 100]);
-            addText(`Total de inscripciones: ${data.children.length}`, 9, 'normal', [100, 100, 100]);
-            addSpace(15);
-            
-            addText('Gracias por su interés en nuestros clubs juveniles.', 11, 'bold', [34, 139, 34]);
-            addText('Nos pondremos en contacto pronto para confirmar la inscripción.', 10, 'normal', [51, 51, 51]);
-            addSpace(15);
-            
-            addText('Bendiciones,', 11, 'italic', [51, 51, 51]);
-            addText('Iglesia Adventista del Séptimo Día Magnolia', 11, 'italic', [51, 51, 51]);
-            
-            // ==================== GUARDAR ARCHIVO ====================
-            
-            // Generar nombre del archivo
-            const fileName = this.generateFileName(data);
-            
-            // Detectar dispositivo y guardar
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            if (isMobile) {
-                await this.handleMobilePDF(doc, fileName, data);
             } else {
-                doc.save(fileName);
-                console.log('📄 PDF profesional descargado exitosamente:', fileName);
+                console.warn('⚠️ Generador profesional no disponible');
             }
             
-            console.log('✅ PDF profesional generado correctamente');
-            return true;
+            // PRIORIDAD 2: Acceso directo al generador profesional
+            if (window.pdfGeneratorWithLogo) {
+                console.log('🔄 Intentando acceso directo al generador profesional...');
+                const success = await window.pdfGeneratorWithLogo.generateAdvancedBasicPDF(data);
+                if (success) {
+                    console.log('🎨 ¡PDF profesional generado por acceso directo!');
+                    return true;
+                }
+            }
+            
+            console.error('❌ Nuevo generador de PDF no disponible - no se generará PDF básico');
+            return false;
             
         } catch (error) {
-            console.error('❌ Error generando PDF profesional:', error);
-            console.error('Detalles del error:', error.message);
+            console.error('❌ Error usando nuevo generador de PDF:', error);
             return false;
         }
     }
@@ -1105,6 +1066,25 @@ Por favor incluya la información en el correo o intente nuevamente.`;
         }
     }
 
+    // NUEVA FUNCIÓN: Configurar validaciones para todos los hijos existentes
+    setupValidationForAllChildren() {
+        const container = this.modal.querySelector('#children-container');
+        const childForms = container.querySelectorAll('.child-form');
+        
+        childForms.forEach(childForm => {
+            // Remover listeners anteriores para evitar duplicados
+            const fields = childForm.querySelectorAll('input, select');
+            fields.forEach(field => {
+                field.replaceWith(field.cloneNode(true));
+            });
+            
+            // Reconfigurar validaciones
+            this.addValidationToNewChild(childForm);
+        });
+        
+        console.log(`✅ Validaciones configuradas para ${childForms.length} hijos`);
+    }
+
     resetForm() {
         const form = this.modal?.querySelector('#inscription-form');
         if (form) {
@@ -1121,11 +1101,14 @@ Por favor incluya la información en el correo o intente nuevamente.`;
             
             this.childrenCount = 1;
             
+            // Asegurar numeración correcta del primer hijo
+            this.renumberChildren();
+            
             form.querySelectorAll('.form-group input, .form-group select').forEach(field => {
                 field.style.borderColor = '#e9ecef';
             });
             
-            console.log('🔄 Formulario reiniciado');
+            console.log('🔄 Formulario reiniciado y renumerado');
         }
     }
 }

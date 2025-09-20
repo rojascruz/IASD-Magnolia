@@ -12,6 +12,7 @@
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="assets/css/page/index/style.css">
     <link rel="stylesheet" href="assets/css/page/index/responsive.css">
+    <link rel="stylesheet" href="assets/css/components/modern-utilities.css">
     
     <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,16 +24,19 @@
     <header class="navbar">
         <div class="container">
             <div class="logo">
-                <h1>IGLESIA ADVENTISTA DEL SÉPTIMO DÍA</h1>
-                <p class="subtitle">MAGNOLIA BAYAMÓN</p>
+                <h2 data-translate="church-title">IGLESIA ADVENTISTA DEL SÉPTIMO DÍA</h2>
+                <p class="subtitle" data-translate="church-subtitle">MAGNOLIA BAYAMÓN</p>
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.html">Sobre Nosotros</a></li>
-                    <li><a href="departamentos.html">Departamentos</a></li>
-                    <li><a href="club.html">Club</a></li>
+                    <li><a href="index.html" data-translate="nav-about">Sobre Nosotros</a></li>
+                    <li><a href="departamentos.html" data-translate="nav-departments">Departamentos</a></li>
+                    <li><a href="club.html" data-translate="nav-club">Club</a></li>
                 </ul>
             </nav>
+            <div class="navbar-logo">
+                <img src="assets/images/Logo.png" alt="Logo IASD Magnolia" class="logo-img">
+            </div>
             <button class="menu-toggle" aria-label="Menú">
                 <span></span>
                 <span></span>
@@ -40,6 +44,11 @@
             </button>
         </div>
     </header>
+
+    <!-- Selector de idioma flotante -->
+    <div class="language-selector">
+        <button id="language-toggle" class="language-btn" data-translate="language-btn">EN</button>
+    </div>
 
     <!-- Sección Oración del Día -->
     <section class="hero">
@@ -194,7 +203,7 @@
             <div class="footer-content">
                 <div class="footer-info">
                     <div class="footer-logo">
-                        <h3>IGLESIA ADVENTISTA</h3>
+                <h2 data-translate="church-title">IGLESIA ADVENTISTA DEL SÉPTIMO DÍA</h2>
                         <p>MAGNOLIA BAYAMÓN</p>
                     </div>
                     
@@ -206,7 +215,7 @@
                         </div> -->
                         
                         <div class="footer-section location-section">
-                            <h4>UBICACIÓN</h4>
+                            <h4 data-translate="footer-location">UBICACIÓN</h4>
                             <!-- <address class="footer-item">
                                 12934 N Union Abbey Road<br>
                                 Union Way, WA 78520
@@ -220,21 +229,21 @@
                                         <path d="M16.5 7.75C13.855 7.75 11.75 9.855 11.75 12.5C11.75 15.145 13.855 17.25 16.5 17.25C19.145 17.25 21.25 15.145 21.25 12.5C21.25 9.855 19.145 7.75 16.5 7.75Z" fill="#1A73E8"/>
                                         <path d="M16.5 3C11.388 3 7 7.027 7 12.5C7 15.591 8.727 18.227 9.87 19.852C11.267 21.828 15.333 27.227 15.723 27.738C16.155 28.301 16.845 28.301 17.277 27.738C17.667 27.227 21.733 21.828 23.13 19.852C24.273 18.227 26 15.591 26 12.5C26 7.027 21.612 3 16.5 3ZM16.5 19C12.91 19 10 16.09 10 12.5C10 8.91 12.91 6 16.5 6C20.09 6 23 8.91 23 12.5C23 16.09 20.09 19 16.5 19Z" fill="#1A73E8"/>
                                     </svg>
-                                    Ver en Google Maps
+                                    <span data-translate="footer-google-maps">Ver en Google Maps</span>
                                 </a>
                                 
                                 <a href="https://waze.com/ul?ll=18.380254272796076,-66.16873116802577&navigate=yes" class="map-button waze" target="_blank">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                                         <path d="M16 2C8.28 2 2 8.28 2 16C2 19.293 3.137 22.335 5.051 24.73C5.822 25.689 5.785 27.12 4.888 27.888C4.665 28.081 4.039 28.392 3.341 28.302C4.115 29.311 5.191 30.073 6.427 30.453C7.664 30.834 8.992 30.812 10.215 30.392C15.249 28.745 21.058 30.497 24.54 34.68C24.924 35.126 25.634 34.901 25.693 34.32C25.818 32.98 25.694 31.624 25.33 30.33C25.309 30.27 25.293 30.208 25.273 30.148C29.073 27.279 31.435 21.975 30.483 16.639C29.531 11.303 25.389 7.061 20.087 5.985C18.632 5.67 17.253 5.5 16 5.5C15.057 5.5 13.937 5.591 13.004 5.756C14.989 5.067 16.979 4.731 19 4.731C19.333 4.731 19.667 4.76 20 4.811C24.125 5.436 28 9.772 28 14.731C28 16.938 27.214 18.939 25.932 20.508C25.16 21.438 24.165 22.171 23.048 22.633C23.657 21.838 24 20.832 24 19.731C24 16.99 21.814 14.731 19 14.731C16.186 14.731 14 16.99 14 19.731C14 20.832 14.343 21.838 14.953 22.633C13.835 22.171 12.84 21.438 12.068 20.508C10.786 18.939 10 16.938 10 14.731C10 12.438 10.779 10.323 12.053 8.731C16.138 8.731 18.5 10.731 18.5 12.131C18.5 12.631 17.5 13.131 17.5 13.131C17.5 11.331 16.128 11.06 15.391 11.06C14.653 11.06 14 11.631 14 12.131C14 12.631 14.653 13.131 15.391 13.131C16.128 13.131 16.5 12.631 16.5 12.131C16.5 12.131 17.187 12.595 17.5 13.131C17.831 13.701 17.626 14.496 16.969 14.731C15.774 14.731 15.062 13.631 15.062 12.631C15.062 11.631 16.118 10.231 19 10.231C19.707 10.231 20.376 10.303 21 10.441C19.884 8.944 18.046 8.004 16 8.004C11.589 8.004 8 11.594 8 16.004C8 20.414 11.589 24.004 16 24.004C20.411 24.004 24 20.414 24 16.004C24 15.448 23.942 14.905 23.835 14.382C24.331 14.177 24.844 14.033 25.373 13.951C25.457 14.622 25.5 15.307 25.5 16C25.5 23.72 19.22 30 11.5 30C10.57 30 9.656 29.899 8.777 29.711C8.504 29.656 8.234 29.59 7.969 29.516C10.728 31.721 14.228 33 18 33C26.284 33 33 26.284 33 18C33 9.716 26.284 3 18 3C17.329 3 16.663 3.046 16 3.123C15.333 3.046 14.671 3 14 3C9.16 3 5 7.16 5 12C5 12.671 5.078 13.324 5.217 13.951C4.687 14.033 4.173 14.177 3.676 14.382C3.564 13.622 3.5 12.819 3.5 12C3.5 6.254 7.254 1.5 12.5 1.5C13.421 1.5 14.305 1.618 15.137 1.829C16.732 1.295 18.343 1 20 1C29.389 1 37 8.611 37 18C37 27.389 29.389 35 20 35C15.343 35 11.209 33.185 8.181 30.241C7.827 30.168 7.485 30.062 7.16 29.916C3.04 27.51 0 22.499 0 16.731C0 9.095 5.592 2.796 13 2.082C13.995 2.025 14.996 2 16 2Z" fill="#33CCFF"/>
                                     </svg>
-                                    Navegar con Waze
+                                    <span data-translate="footer-waze">Navegar con Waze</span>
                                 </a>
                                 
                                 <a href="https://www.apple.com/maps/?ll=18.380254272796076,-66.16873116802577&q=Iglesia+Adventista+Magnolia" class="map-button apple-maps" target="_blank">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
                                         <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z" fill="#666666"/>
                                     </svg>
-                                    Abrir en Apple Maps
+                                    <span data-translate="footer-apple-maps">Abrir en Apple Maps</span>
                                 </a>
                             </div>
 <!-- 
@@ -274,7 +283,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                     <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" fill="currentColor"/>
                                 </svg>
-                                <p>Para direcciones específicas o si necesitas ayuda para llegar, contáctanos por WhatsApp.</p>
+                                <p data-translate="footer-map-info">Para direcciones específicas o si necesitas ayuda para llegar, contáctanos por WhatsApp.</p>
                             </div>
                         </div>
 <!--                         
@@ -286,7 +295,7 @@
                     </div>
                     
                     <div class="footer-social">
-                        <h4>SÍGUENOS</h4>
+                        <h4 data-translate="footer-follow">SÍGUENOS</h4>
                         <div class="social-icons">
                             <!-- <a href="https://wa.me/17877173720" class="social-icon whatsapp" aria-label="WhatsApp" target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -313,15 +322,15 @@
                 </div>
                 
                 <div class="footer-form compact">
-                    <h3>CONTÁCTANOS</h3>
-                    <p>Envíanos un mensaje y nos pondremos en contacto contigo lo antes posible.</p>
+                    <h3 data-translate="footer-contact">CONTÁCTANOS</h3>
+                    <p data-translate="footer-contact-message">Envíanos un mensaje y nos pondremos en contacto contigo lo antes posible.</p>
                     
                     <div class="contact-options">
                         <a href="https://wa.me/17876083870" class="whatsapp-button" target="_blank">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                 <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
                             </svg>
-                            <span>Contáctanos vía WhatsApp</span>
+                            <span data-translate="footer-whatsapp">Contáctanos vía WhatsApp</span>
                             <span class="phone-number">787-608-3870</span>
                         </a>
                     </div>
@@ -331,8 +340,8 @@
                             <path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 239.2 272.8 232 264 232h-32C223.2 232 216 239.2 216 248S223.2 264 232 264h16v72h-16C223.2 336 216 343.2 216 352s7.164 16 16 16h64c8.836 0 16-7.164 16-16S304.8 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"/>
                         </svg>
                         <div>
-                            <h4>Horario de Atención</h4>
-                            <p>Lunes - Viernes: 9:00 AM - 5:00 PM</p>
+                            <h4 data-translate="footer-schedule-title">Horario de Atención</h4>
+                            <p data-translate="footer-schedule-hours">Lunes - Viernes: 9:00 AM - 5:00 PM</p>
                         </div>
                     </div>
                         <!-- <div class="contact-item">
@@ -349,7 +358,7 @@
             </div>
             
             <div class="copyright">
-                <p>© 2025 - Iglesia Adventista del Séptimo Día Magnolia Bayamón</p>
+                <p data-translate="footer-copyright">© 2025 - Iglesia Adventista del Séptimo Día Magnolia Bayamón</p>
             </div>
         </div>
     </footer>
@@ -360,6 +369,8 @@
     <script src="assets/js/components/index/main.js"></script>
     <script src="assets/js/components/index/slider.js"></script>
     <script src="assets/js/components/index/copy-coordinates.js"></script>
+    <script src="assets/js/components/index/modern-effects.js"></script>
+    <script src="assets/js/components/index/language-manager.js"></script>
 
 </body>
 </html>

@@ -102,13 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 let clubMessage = '';
                 if (clubSelect && clubSelect.value) {
                     const clubText = clubSelect.options[clubSelect.selectedIndex].text;
-                    clubMessage = `\n🎯 Club sugerido: ${clubText}`;
+                    clubMessage = `\n Club sugerido: ${clubText}`;
                 }
                 
                 if (window.notifications) {
                     window.notifications.success(
-                        'Edad Calculada Automáticamente',
-                        `✅ Edad: ${age} años${clubMessage}\n\n💡 La edad se calculó automáticamente basada en la fecha de nacimiento.`,
+                        'Gracias por inscribir a su hijo/a',
+                        `✅ Edad: ${age} años${clubMessage}\n\n💡`,
                         { duration: 4000 }
                     );
                 }
@@ -245,11 +245,6 @@ Fecha: ${new Date().toLocaleString('es-ES', {
                     if (pdfGeneratedSuccessfully) {
                         message = `¡PERFECTO! PDF generado y email preparado.
 
-📋 PASOS PARA ENVIAR:
-1. ✅ PDF descargado automáticamente
-2. 📧 Cliente de correo abierto con mensaje
-3. 📎 Adjunte el PDF descargado
-4. ✉️ Presione ENVIAR
 
 El mensaje profesional ya está listo.`;
                     } else {
@@ -302,88 +297,39 @@ ENVÍO MANUAL:
                 }
             };
             
-            // NUEVA FUNCIÓN: Forzar generación de PDF
+            // NUEVA FUNCIÓN: Generar PDF usando SOLO el método de imagen HTML
             window.inscriptionModal.forceGeneratePDF = async function(data) {
-                console.log('🔄 Método alternativo para generar PDF...');
+                console.log('🎯 Generando PDF usando método HTML→Imagen exclusivamente...');
                 
                 try {
-                    // Verificar múltiples formas de acceder a jsPDF
-                    let doc = null;
-                    
-                    if (window.jspdf && window.jspdf.jsPDF) {
-                        doc = new window.jspdf.jsPDF();
-                    } else if (window.jsPDF) {
-                        doc = new window.jsPDF();
-                    } else if (typeof jsPDF !== 'undefined') {
-                        doc = new jsPDF();
-                    }
-                    
-                    if (!doc) {
-                        console.error('❌ jsPDF no está disponible');
-                        return false;
-                    }
-                    
-                    console.log('📄 Generando PDF simplificado...');
-                    
-                    // PDF Simplificado pero completo
-                    doc.setFontSize(16);
-                    doc.text('INSCRIPCIÓN CLUB JUVENIL', 20, 20);
-                    doc.text('IASD MAGNOLIA', 20, 30);
-                    
-                    doc.setFontSize(12);
-                    let y = 50;
-                    
-                    // Información del padre
-                    doc.text('INFORMACIÓN DEL PADRE/MADRE:', 20, y);
-                    y += 10;
-                    doc.text(`Nombre: ${data.parent.name}`, 20, y);
-                    y += 7;
-                    doc.text(`Teléfono: ${data.parent.phone}`, 20, y);
-                    y += 7;
-                    doc.text(`Email: ${data.parent.email}`, 20, y);
-                    y += 7;
-                    if (data.parent.address) {
-                        doc.text(`Dirección: ${data.parent.address}`, 20, y);
-                        y += 7;
-                    }
-                    
-                    y += 10;
-                    doc.text('INFORMACIÓN DE LOS HIJOS:', 20, y);
-                    y += 10;
-                    
-                    // Información de cada hijo
-                    data.children.forEach((child, index) => {
-                        doc.text(`HIJO ${index + 1}:`, 20, y);
-                        y += 7;
-                        doc.text(`  Nombre: ${child.name}`, 25, y);
-                        y += 7;
-                        doc.text(`  Edad: ${child.age} años`, 25, y);
-                        y += 7;
-                        doc.text(`  Fecha Nacimiento: ${child.birthdate}`, 25, y);
-                        y += 7;
-                        doc.text(`  Club: ${child.club}`, 25, y);
-                        y += 7;
-                        if (child.allergies) {
-                            doc.text(`  Alergias: ${child.allergies}`, 25, y);
-                            y += 7;
+                    // MÉTODO ÚNICO: Nuevo generador con imagen completa (html2canvas + jsPDF)
+                    if (window.generatePDFWithLogo) {
+                        console.log('🖼️ Usando generador HTML→Imagen (formato visual completo)...');
+                        const success = await window.generatePDFWithLogo(data);
+                        if (success) {
+                            console.log('✅ PDF visual con imagen completa generado exitosamente');
+                            return true;
+                        } else {
+                            console.warn('⚠️ Método HTML→Imagen falló, reintentando...');
                         }
-                        y += 5;
-                    });
+                    }
                     
-                    y += 10;
-                    doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, 20, y);
+                    // MÉTODO DIRECTO: Acceder al generador directamente
+                    if (window.pdfGeneratorWithLogo) {
+                        console.log('🔄 Intentando método directo HTML→Imagen...');
+                        const success = await window.pdfGeneratorWithLogo.generatePDFFromHTML(data);
+                        if (success) {
+                            console.log('✅ PDF imagen generado exitosamente (método directo)');
+                            return true;
+                        }
+                    }
                     
-                    // Generar nombre del archivo
-                    const fileName = this.generateFileName(data);
-                    
-                    // Descargar el PDF
-                    doc.save(fileName);
-                    
-                    console.log('✅ PDF alternativo generado y descargado:', fileName);
-                    return true;
+                    console.error('❌ NO se usará método básico de texto - solo formato imagen');
+                    console.error('❌ Verifique que html2canvas esté cargado correctamente');
+                    return false;
                     
                 } catch (error) {
-                    console.error('❌ Error en método alternativo de PDF:', error);
+                    console.error('❌ Error en método de imagen HTML:', error);
                     return false;
                 }
             };

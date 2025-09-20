@@ -8,8 +8,8 @@
                 <div class="header-content">
                     <div class="header-icon">📝</div>
                     <div class="header-text">
-                        <h2>Inscripción a los Clubs</h2>
-                        <p>Complete el formulario para inscribir a su(s) hijo(s)</p>
+                        <h2 data-translate="modal-title">Inscripción a los Clubs</h2>
+                        <p data-translate="modal-subtitle">Complete el formulario para inscribir a su(s) hijo(s)</p>
                     </div>
                 </div>
                 <button class="close-btn" id="close-modal">
@@ -33,32 +33,32 @@
         <div class="section-header">
             <div>
                 <div class="section-icon">👤</div>
-                <h3>Información del Padre/Madre/Tutor</h3>
+                <h3 data-translate="parent-info-title">Información del Padre/Madre/Tutor</h3>
             </div>
         </div>
         
         <div class="form-row">
             <div class="form-group full-width">
-                <label>Nombre Completo *</label>
-                <input type="text" name="parentName" required placeholder="Ingrese su nombre completo">
+                <label data-translate="parent-name">Nombre Completo *</label>
+                <input type="text" name="parentName" required data-translate-placeholder="parent-name-placeholder" placeholder="Ingrese su nombre completo">
             </div>
         </div>
         
         <div class="form-row">
             <div class="form-group">
-                <label>Teléfono *</label>
-                <input type="tel" name="parentPhone" required placeholder="(787) 123-4567">
+                <label data-translate="parent-phone">Teléfono *</label>
+                <input type="tel" name="parentPhone" required data-translate-placeholder="parent-phone-placeholder" placeholder="(787) 123-4567">
             </div>
             <div class="form-group">
-                <label>Email *</label>
-                <input type="email" name="parentEmail" required placeholder="ejemplo@email.com">
+                <label data-translate="parent-email">Email *</label>
+                <input type="email" name="parentEmail" required data-translate-placeholder="parent-email-placeholder" placeholder="ejemplo@email.com">
             </div>
         </div>
         
         <div class="form-row">
             <div class="form-group full-width">
-                <label>Dirección</label>
-                <input type="text" name="parentAddress" placeholder="Dirección completa (opcional)">
+                <label data-translate="parent-address">Dirección</label>
+                <input type="text" name="parentAddress" data-translate-placeholder="parent-address-placeholder" placeholder="Dirección completa (opcional)">
             </div>
         </div>
     </div>
@@ -69,13 +69,13 @@
         <div class="section-header">
             <div>
                 <div class="section-icon">👶</div>
-                <h3>Información de los Hijos</h3>
+                <h3 data-translate="children-info-title">Información de los Hijos</h3>
             </div>
             <button type="button" class="add-child-btn" id="add-child-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                 </svg>
-                Agregar otro hijo
+                <span data-translate="add-child-btn">Agregar otro hijo</span>
             </button>
         </div>
         
@@ -88,52 +88,52 @@
 <template id="child-form-template">
     <div class="child-form" data-child="{{childNumber}}">
         <div class="child-header">
-            <h4>Hijo/Hija #{{childNumber}}</h4>
+            <h4><span data-translate="child-title">Hijo/Hija</span> #{{childNumber}}</h4>
             {{removeButton}}
         </div>
         
         <div class="form-row">
             <div class="form-group full-width">
-                <label>Nombre Completo del Niño/Joven *</label>
-                <input type="text" name="childName_{{childNumber}}" required placeholder="Nombre completo del niño/joven">
+                <label data-translate="child-name-label">Nombre Completo del Niño/Joven *</label>
+                <input type="text" name="childName_{{childNumber}}" required data-translate-placeholder="child-name-placeholder" placeholder="Nombre completo del niño/joven">
             </div>
         </div>
         
         <div class="form-row">
             <div class="form-group">
-                <label>Fecha de Nacimiento *</label>
+                <label data-translate="child-birthdate-label">Fecha de Nacimiento *</label>
                 <input type="date" name="childBirthdate_{{childNumber}}" required>
             </div>
             <div class="form-group">
-                <label>Edad *</label>
-                <input type="number" name="childAge_{{childNumber}}" min="6" max="21" required placeholder="Edad">
+                <label data-translate="child-age-label">Edad *</label>
+                <input type="number" name="childAge_{{childNumber}}" min="6" max="21" required data-translate-placeholder="child-age-placeholder" placeholder="Edad">
             </div>
         </div>
         
         <div class="form-row">
             <div class="form-group">
-                <label>Club Deseado *</label>
+                <label data-translate="child-club-label">Club Deseado *</label>
                 <select name="selectedClub_{{childNumber}}" required>
-                    <option value="">Seleccionar Club</option>
-                    <option value="aventureros">🌟 Los Aventureros (6-9 años)</option>
-                    <option value="conquistadores">🏕️ Conquistadores (10-15 años)</option>
-                    <option value="cadetes">🎯 Cadetes (16-21 años)</option>
+                    <option value="" data-translate="select-club-option">Seleccionar Club</option>
+                    <option value="aventureros" data-translate="club-aventureros">🌟 Los Aventureros (6-9 años)</option>
+                    <option value="conquistadores" data-translate="club-conquistadores">🏕️ Conquistadores (10-15 años)</option>
+                    <option value="cadetes" data-translate="club-cadetes">🎯 Cadetes (16-21 años)</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Género *</label>
+                <label data-translate="child-gender-label">Género *</label>
                 <select name="childGender_{{childNumber}}" required>
-                    <option value="">Seleccionar</option>
-                    <option value="masculino">Masculino</option>
-                    <option value="femenino">Femenino</option>
+                    <option value="" data-translate="select-gender-option">Seleccionar</option>
+                    <option value="masculino" data-translate="gender-male">Masculino</option>
+                    <option value="femenino" data-translate="gender-female">Femenino</option>
                 </select>
             </div>
         </div>
         
         <div class="form-row">
             <div class="form-group full-width">
-                <label>Alergias o Condiciones Médicas</label>
-                <textarea name="childAllergies_{{childNumber}}" rows="3" placeholder="Describa cualquier alergia o condición médica importante (opcional)"></textarea>
+                <label data-translate="child-allergies-label">Alergias o Condiciones Médicas</label>
+                <textarea name="childAllergies_{{childNumber}}" rows="3" data-translate-placeholder="child-allergies-placeholder" placeholder="Describa cualquier alergia o condición médica importante (opcional)"></textarea>
             </div>
         </div>
     </div>
@@ -144,7 +144,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
         </svg>
-        Remover
+        <span data-translate="remove-child-btn">Remover</span>
     </button>
 </template>
 
@@ -154,13 +154,13 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
             </svg>
-            Cancelar
+            <span data-translate="cancel-btn">Cancelar</span>
         </button>
         <button type="submit" class="btn-submit">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
             </svg>
-            Enviar Inscripción
+            <span data-translate="submit-btn">Enviar Inscripción</span>
         </button>
     </div>
 </template>

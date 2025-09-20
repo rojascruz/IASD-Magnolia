@@ -7,23 +7,21 @@
 }
 
 .inscription-btn {
-    background: #28a745;
+    background: #4a90e2;
     color: white;
     border: none;
-    padding: 15px 40px;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 1.2rem;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    transition: opacity 0.2s ease;
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
     font-family: 'Montserrat', sans-serif;
 }
 
 .inscription-btn:hover {
-    background: #218838;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+    opacity: 0.9;
 }
 
 /* Sección principal de clubs */
