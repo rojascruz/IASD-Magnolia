@@ -13,11 +13,11 @@
     <link rel="stylesheet" href="assets/css/page/index/style.css">
     <link rel="stylesheet" href="assets/css/page/index/responsive.css">
     <link rel="stylesheet" href="assets/css/page/club/club.css">
+    <link rel="stylesheet" href="assets/css/components/modern-utilities.css">
     <!-- CSS de componentes -->
     <link rel="stylesheet" href="assets/css/components/club/notification-system/notification-system.css">
     <link rel="stylesheet" href="assets/css/components/club/inscription-modal/inscription-modal.css">
     <link rel="stylesheet" href="assets/css/components/club/club-interative/club-interative.css">
-    <link rel="stylesheet" href="assets/css/components/club/age-calculator/age-calculator.css">
     <!-- <link rel="stylesheet" href="/assets/css/components/club/pdf-generator/pdf-generator.css"> -->
     
     <!-- Fuentes -->
@@ -30,16 +30,20 @@
     <header class="navbar">
         <div class="container">
             <div class="logo">
-                <h1>IGLESIA ADVENTISTA DEL SÉPTIMO DÍA</h1>
-                <p class="subtitle">MAGNOLIA BAYAMÓN</p>
+                <h2 data-translate="church-title">IGLESIA ADVENTISTA DEL SÉPTIMO DÍA</h2>
+                <p class="subtitle" data-translate="church-subtitle">MAGNOLIA BAYAMÓN</p>
             </div>
             <nav>
+                
                 <ul>
-                    <li><a href="index.html">Sobre Nosotros</a></li>
-                    <li><a href="departamentos.html">Departamentos</a></li>
-                    <li><a href="club.html" class="active">Club</a></li>
+                    <li><a href="index.html" data-translate="nav-about">Sobre Nosotros</a></li>
+                    <li><a href="departamentos.html" data-translate="nav-departments">Departamentos</a></li>
+                    <li><a href="club.html" class="active" data-translate="nav-club">Club</a></li>
                 </ul>
             </nav>
+            <div class="navbar-logo">
+                <img src="assets/images/Logo.png" alt="Logo IASD Magnolia" class="logo-img">
+            </div>
             <button class="menu-toggle" aria-label="Menú">
                 <span></span>
                 <span></span>
@@ -51,11 +55,11 @@
     <!-- Sección Clubs -->
     <section class="clubs">
         <div class="container">
-            <h2 class="section-title">Nuestros Clubs</h2>
+            <h2 class="section-title" data-translate="clubs-title">Nuestros Clubs</h2>
             
             <!-- Botón de Inscripción Verde -->
             <div class="inscription-button-container">
-                <button class="inscription-btn" id="open-inscription">
+                <button class="inscription-btn" id="open-inscription" data-translate="inscription-btn">
                     📝 Inscripción
                 </button>
             </div>
@@ -70,27 +74,27 @@
                                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                             </svg>
                         </div>
-                        <h3>Los Aventureros</h3>
-                        <div class="age-range">6 - 9 años</div>
+                        <h3 data-translate="aventureros-title">Los Aventureros</h3>
+                        <div class="age-range" data-translate="aventureros-age">6 - 9 años</div>
                     </div>
                     <div class="club-content">
-                        <p>Un programa diseñado para los más pequeños, donde aprenden sobre Jesús a través de juegos, manualidades y actividades al aire libre.</p>
+                        <p data-translate="aventureros-description">Un programa diseñado para los más pequeños, donde aprenden sobre Jesús a través de juegos, manualidades y actividades al aire libre.</p>
                         <div class="club-features">
                             <div class="feature">
                                 <span class="feature-icon">🎨</span>
-                                <span>Manualidades</span>
+                                <span data-translate="aventureros-feature1">Manualidades</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">🎵</span>
-                                <span>Música y Cantos</span>
+                                <span data-translate="aventureros-feature2">Música y Cantos</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">🌱</span>
-                                <span>Naturaleza</span>
+                                <span data-translate="aventureros-feature3">Naturaleza</span>
                             </div>
                         </div>
                         <div class="club-schedule">
-                            <strong>Reuniones:</strong> Sábados 5:00 PM
+                            <strong data-translate="schedule-label">Reuniones:</strong> <span data-translate="schedule">Sábados 5:00 PM</span>
                         </div>
                     </div>
                 </div>
@@ -103,27 +107,27 @@
                                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                             </svg>
                         </div>
-                        <h3>Conquistadores</h3>
-                        <div class="age-range">10 - 15 años</div>
+                        <h3 data-translate="conquistadores-title">Conquistadores</h3>
+                        <div class="age-range" data-translate="conquistadores-age">10 - 15 años</div>
                     </div>
                     <div class="club-content">
-                        <p>Programa integral que desarrolla habilidades prácticas, espirituales y sociales a través de especialidades, campamentos y servicio comunitario.</p>
+                        <p data-translate="conquistadores-description">Programa integral que desarrolla habilidades prácticas, espirituales y sociales a través de especialidades, campamentos y servicio comunitario.</p>
                         <div class="club-features">
                             <div class="feature">
                                 <span class="feature-icon">🏕️</span>
-                                <span>Campamentos</span>
+                                <span data-translate="conquistadores-feature1">Campamentos</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">🎖️</span>
-                                <span>Especialidades</span>
+                                <span data-translate="conquistadores-feature2">Especialidades</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">🤝</span>
-                                <span>Servicio Comunitario</span>
+                                <span data-translate="conquistadores-feature3">Servicio Comunitario</span>
                             </div>
                         </div>
                         <div class="club-schedule">
-                            <strong>Reuniones:</strong> Sábados 5:00 PM
+                            <strong data-translate="schedule-label">Reuniones:</strong> <span data-translate="schedule">Sábados 5:00 PM</span>
                         </div>
                     </div>
                 </div>
@@ -136,27 +140,27 @@
                                 <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 9.74s9-4.19 9-9.74V7L12 2z"/>
                             </svg>
                         </div>
-                        <h3>Cadetes</h3>
-                        <div class="age-range">16 - 21 años</div>
+                        <h3 data-translate="cadetes-title">Cadetes</h3>
+                        <div class="age-range" data-translate="cadetes-age">16 - 21 años</div>
                     </div>
                     <div class="club-content">
-                        <p>Programa avanzado para jóvenes que buscan desarrollar liderazgo cristiano y prepararse para el servicio en la iglesia y la comunidad.</p>
+                        <p data-translate="cadetes-description">Programa avanzado para jóvenes que buscan desarrollar liderazgo cristiano y prepararse para el servicio en la iglesia y la comunidad.</p>
                         <div class="club-features">
                             <div class="feature">
                                 <span class="feature-icon">👥</span>
-                                <span>Liderazgo</span>
+                                <span data-translate="cadetes-feature1">Liderazgo</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">📚</span>
-                                <span>Estudio Avanzado</span>
+                                <span data-translate="cadetes-feature2">Estudio Avanzado</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">🚀</span>
-                                <span>Proyectos Misioneros</span>
+                                <span data-translate="cadetes-feature3">Proyectos Misioneros</span>
                             </div>
                         </div>
                         <div class="club-schedule">
-                            <strong>Reuniones:</strong> Sábados 5:00 PM
+                            <strong data-translate="schedule-label">Reuniones:</strong> <span data-translate="schedule">Sábados 5:00 PM</span>
                         </div>
                     </div>
                 </div>
@@ -175,8 +179,8 @@
                             <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-1 16H9V7h9v14z"/>
                         </svg>
                     </div>
-                    <h3>Manual de Actividades</h3>
-                    <p>Cada club sigue un programa estructurado con actividades diseñadas para el desarrollo integral de nuestros jóvenes en un ambiente cristiano.</p>
+                    <h3 data-translate="manual-title">Manual de Actividades</h3>
+                    <p data-translate="manual-description">Cada club sigue un programa estructurado con actividades diseñadas para el desarrollo integral de nuestros jóvenes en un ambiente cristiano.</p>
                 </div>
                 
                 <div class="info-card">
@@ -185,8 +189,8 @@
                             <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
                         </svg>
                     </div>
-                    <h3>Líderes Capacitados</h3>
-                    <p>Nuestros directores y consejeros están certificados y comprometidos con el desarrollo espiritual y personal de cada participante.</p>
+                    <h3 data-translate="leaders-title">Líderes Capacitados</h3>
+                    <p data-translate="leaders-description">Nuestros directores y consejeros están certificados y comprometidos con el desarrollo espiritual y personal de cada participante.</p>
                 </div>
             </div>
         </div>
@@ -195,60 +199,79 @@
     <!-- Footer será cargado dinámicamente desde index.html -->
     <div id="footer-container"></div>
     
-    <!-- Genera los PDF -->
+    <!-- Librerías externas - Se cargan primero -->
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     
-    <!-- Scripts - Orden optimizado sin duplicados -->
+    <!-- Scripts base - Orden de dependencia optimizado -->
     <script src="assets/js/components/club/notification-system.js"></script>
+    <script src="assets/js/components/club/pdf-generator-with-logo.js"></script>
     <script src="assets/js/components/club/inscription-modal.js"></script>
-    <script src="assets/js/components/club/age-calculator-simple.js"></script>
+    <script src="assets/js/components/club/age-calculator.js"></script>
     <script src="assets/js/components/club/inscription-modal-fix.js"></script>
     <script src="assets/js/components/club/club-interative.js"></script>
+    
+    <!-- Scripts de página necesarios para footer y navegación -->
     <script src="assets/js/components/index/footer-loader.js"></script>
     <script src="assets/js/components/index/main.js"></script>
-    <script src="assets/js/components/index/copy-coordinates.js"></script>
+    <script src="assets/js/components/index/modern-effects.js"></script>
+    <script src="assets/js/components/index/language-manager.js"></script>
 
 
 
-    <!-- Script de verificación final -->
+    <!-- Script de verificación optimizado -->
     <script>
         window.addEventListener('load', function() {
-    console.log('🎯 Página completamente cargada');
-    
-    // Verificar que todo funcione después de 1 segundo
-    setTimeout(function() {
-        const btn = document.getElementById('open-inscription');
-        const hasNotifications = !!window.notifications;
-        const hasInscriptionModal = !!window.inscriptionModal;
-        const hasClubInteractive = !!window.clubInteractive;
-        const hasPdfGenerator = !!window.pdfGenerator;
-        
-        console.log('📊 Estado detallado de componentes:');
-        console.log('- Botón inscripción:', !!btn);
-        console.log('- Notificaciones:', hasNotifications);
-        console.log('- Modal inscripción:', hasInscriptionModal);
-        console.log('- Club interactive:', hasClubInteractive);
-        
-        // Verificar cuáles componentes faltan específicamente
-        const missingComponents = [];
-        if (!btn) missingComponents.push('Botón de inscripción');
-        if (!hasNotifications) missingComponents.push('Sistema de notificaciones');
-        if (!hasInscriptionModal) missingComponents.push('Modal de inscripción');
-        if (!hasClubInteractive) missingComponents.push('Club interactive');
-        
-        if (missingComponents.length === 0) {
-            console.log('✅ Todos los componentes funcionando correctamente');
-        } else {
-            console.warn('⚠️ Componentes faltantes:', missingComponents.join(', '));
-            console.log('ℹ️ Nota: Esto no afecta la funcionalidad principal del modal de inscripción');
+            console.log('🎯 Página de club cargada correctamente');
             
-            // Verificar si al menos el modal funciona (que es lo importante)
-            if (hasInscriptionModal && btn) {
-                console.log('✅ Funcionalidad principal (modal de inscripción) está funcionando');
-            }
-        }
-    }, 1000);
-});
+            // Verificar componentes críticos después de la carga
+            setTimeout(function() {
+                const hasInscription = !!document.getElementById('open-inscription');
+                const hasNotifications = !!window.notifications;
+                const hasModal = !!window.inscriptionModal;
+                const hasPdfGenerator = !!window.pdfGeneratorWithLogo;
+                const hasHtml2Canvas = typeof html2canvas !== 'undefined';
+                const hasJsPDF = !!(window.jspdf || window.jsPDF);
+                
+                const status = {
+                    'Botón inscripción': hasInscription,
+                    'Sistema notificaciones': hasNotifications,
+                    'Modal inscripción': hasModal,
+                    'Generador PDF': hasPdfGenerator,
+                    'html2canvas': hasHtml2Canvas,
+                    'jsPDF': hasJsPDF
+                };
+                
+                console.log('📊 Estado componentes club:', status);
+                
+                // Verificar específicamente las librerías de PDF
+                if (!hasHtml2Canvas) {
+                    console.error('❌ PROBLEMA: html2canvas no está cargado - los PDFs serán de texto básico');
+                } else {
+                    console.log('✅ html2canvas disponible - PDFs serán formato imagen completa');
+                }
+                
+                if (!hasJsPDF) {
+                    console.error('❌ PROBLEMA: jsPDF no está cargado');
+                } else {
+                    console.log('✅ jsPDF disponible');
+                }
+                
+                const pdfReady = hasPdfGenerator && hasHtml2Canvas && hasJsPDF;
+                if (pdfReady) {
+                    console.log('🎯 ¡SISTEMA PDF LISTO PARA GENERAR FORMATO IMAGEN!');
+                } else {
+                    console.warn('⚠️ Sistema PDF no está completamente configurado');
+                }
+                
+                const allWorking = hasInscription && hasModal && hasPdfGenerator;
+                if (allWorking) {
+                    console.log('✅ Funcionalidad principal del club funcionando');
+                } else {
+                    console.warn('⚠️ Algunos componentes críticos no están disponibles');
+                }
+            }, 1500); // Más tiempo para que se carguen las librerías externas
+        });
     </script>
 </body>
 </html>

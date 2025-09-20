@@ -1,17 +1,29 @@
 /* 
  * Estilos principales para la landing page de Iglesia Adventista
  * Autor: Generado para el proyecto Magnolia
- * Versión: 1.0
+ * Versión: 2.0 - Modernizada con animaciones y colores frescos
  */
 
 /* ======= VARIABLES ======= */
 :root {
-    /* Colores principales */
+    /* Colores principales - MODERNIZADOS */
     --primary: #1a1a1a;
     --secondary: #4a4a4a;
     --accent: #daa520;  /* Dorado para acentos */
-    --light: #f8f8f8;
+    --light: #f8f9fa;
     --dark: #121212;
+    
+    /* NUEVOS COLORES MODERNOS */
+    --blue-light: #74c0fc;     /* Azul claro suave */
+    --blue-gradient-start: #74c0fc; /* Azul claro */
+    --blue-gradient-end: #339af0;   /* Azul medio */
+    --white-pure: #ffffff;
+    --gray-light: #e9ecef;
+    --gray-medium: #6c757d;
+    --success: #51cf66;
+    --warning: #ffd43b;
+    --shadow-light: rgba(116, 192, 252, 0.15);
+    --shadow-blue: rgba(51, 154, 240, 0.2);
     
     /* Tipografía */
     --font-primary: 'Montserrat', sans-serif;
@@ -24,9 +36,18 @@
     --spacing-lg: 4rem;
     --spacing-xl: 6rem;
     
-    /* Bordes y sombras */
-    --border-radius: 4px;
-    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* Bordes y sombras - MODERNIZADOS */
+    --border-radius: 12px;
+    --border-radius-sm: 8px;
+    --border-radius-lg: 20px;
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --box-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+    --box-shadow-blue: 0 8px 25px var(--shadow-blue);
+    
+    /* Animaciones */
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ======= RESET Y BASES ======= */
@@ -45,8 +66,25 @@ body {
     font-family: var(--font-secondary);
     line-height: 1.6;
     color: var(--secondary);
-    background-color: var(--light);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     overflow-x: hidden;
+    font-weight: 400;
+}
+
+/* ANIMACIÓN DE CARGA SUAVE */
+body {
+    animation: fadeInPage 0.8s ease-out;
+}
+
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 img {
@@ -58,11 +96,12 @@ img {
 a {
     color: var(--primary);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all var(--transition-smooth);
 }
 
 a:hover {
-    color: var(--accent);
+    color: var(--blue-gradient-end);
+    transform: translateY(-1px);
 }
 
 ul {
@@ -84,23 +123,54 @@ ul {
     margin-bottom: var(--spacing-md);
     color: var(--primary);
     position: relative;
+    animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .divider {
     width: 5rem;
     height: 4px;
-    background-color: var(--accent);
+    background: linear-gradient(90deg, var(--blue-gradient-start), var(--blue-gradient-end));
     margin: var(--spacing-sm) 0 var(--spacing-md);
+    border-radius: 2px;
+    animation: expandWidth 0.8s ease-out 0.3s both;
 }
 
-/* ======= NAVEGACIÓN ======= */
+@keyframes expandWidth {
+    from {
+        width: 0;
+    }
+    to {
+        width: 5rem;
+    }
+}
+
+/* ======= NAVEGACIÓN MODERNIZADA ======= */
 .navbar {
     position: sticky;
     top: 0;
-    background-color: white;
-    box-shadow: var(--box-shadow);
+    background: #f8f6f0; /* Blanco hueso */
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: var(--spacing-sm) 0;
     z-index: 1000;
+    transition: all var(--transition-smooth);
+}
+
+/* Efecto al hacer scroll */
+.navbar.scrolled {
+    padding: calc(var(--spacing-sm) * 0.7) 0;
+    box-shadow: var(--box-shadow-lg);
 }
 
 .navbar .container {
@@ -109,35 +179,107 @@ ul {
     align-items: center;
 }
 
-.logo h1 {
+/* Logo principal - MODERNIZADO Y UNIFICADO */
+.logo h1, .logo h2 {
     font-family: var(--font-primary);
-    font-size: 1.2rem;
-    font-weight: 700;
+    font-size: 0.85rem; /* Tamaño unificado más pequeño */
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.0px;
     margin: 0;
+    color: #2c2c2c; /* Negro suave en lugar de blanco */
+    text-shadow: none; /* Sin sombra */
+    transition: all var(--transition-smooth);
+}
+
+.logo h1:hover, .logo h2:hover {
+    transform: scale(1.02);
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .logo .subtitle {
-    font-size: 0.8rem;
-    margin-top: -5px;
-    letter-spacing: 1px;
+    font-size: 0.75rem; /* Más pequeño también */
+    margin-top: -3px;
+    letter-spacing: 1.0px;
+    color: #6c757d; /* Gris oscuro en lugar de blanco */
+    transition: all var(--transition-smooth);
 }
 
+/* Navegación - MODERNIZADA */
 nav ul {
     display: flex;
-}
-
-nav ul li {
-    margin-left: var(--spacing-md);
+    gap: var(--spacing-md);
 }
 
 nav ul li a {
     font-family: var(--font-primary);
-    font-weight: 500;
+    font-weight: 600;
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+    color: #2c2c2c; /* Negro suave */
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto hover moderno para links de navegación */
+nav ul li a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left var(--transition-smooth);
+}
+
+nav ul li a:hover::before {
+    left: 100%;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    transform: translateY(-2px);
+    color: var(--white-pure);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo en el navbar (parte superior derecha) - MODERNIZADO */
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    margin-left: calc(var(--spacing-lg) * 2);
+    margin-right: var(--spacing-sm);
+    order: 2;
+}
+
+.logo-img {
+    height: 65px; /* Más grande - era 55px */
+    width: auto;
+    max-width: 180px; /* Más grande - era 160px */
+    object-fit: contain;
+    transition: all var(--transition-smooth);
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+.logo-img:hover {
+    transform: scale(1.05) rotate(2deg);
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+}
+
+/* Orden de elementos */
+.menu-toggle {
+    order: 3;
+}
+
+nav {
+    order: 1;
 }
 
 .nav-social {
@@ -147,43 +289,115 @@ nav ul li a {
 
 .nav-social a {
     margin-left: var(--spacing-sm);
+    padding: var(--spacing-xs);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-smooth);
+}
+
+.nav-social a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px) scale(1.1);
 }
 
 .nav-social img {
     width: 18px;
     height: 18px;
+    filter: brightness(0) invert(1);
 }
 
+/* MENÚ TOGGLE MODERNIZADO */
 .menu-toggle {
     display: none;
-    background: none;
+    background: rgba(255, 255, 255, 0.1);
     border: none;
     cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-smooth);
+    backdrop-filter: blur(10px);
+}
+
+.menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
 }
 
 .menu-toggle span {
     display: block;
     width: 25px;
-    height: 2px;
-    margin: 5px 0;
-    background-color: var(--primary);
-    transition: all 0.3s ease;
+    height: 3px;
+    margin: 4px 0;
+    background-color: var(--white-pure);
+    transition: all var(--transition-smooth);
+    border-radius: 2px;
 }
 
-/* ======= HERO SECTION ======= */
+/* Animación del menú hamburguesa */
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* ======= HERO SECTION MODERNIZADO ======= */
 .hero {
     padding: var(--spacing-xl) 0;
-    background-color: #f9f9f9;
+    background: linear-gradient(135deg, 
+        rgba(116, 192, 252, 0.05) 0%, 
+        rgba(51, 154, 240, 0.08) 50%, 
+        rgba(255, 255, 255, 0.95) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efectos de fondo dinámicos */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, var(--shadow-light) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: floatBackground 20s linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes floatBackground {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-50px) translateY(-50px); }
 }
 
 .hero-content {
     display: flex;
     align-items: center;
     gap: var(--spacing-lg);
+    position: relative;
+    z-index: 2;
 }
 
 .hero-text {
     flex: 1;
+    animation: slideInLeft 0.8s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .hero-text h2 {
@@ -193,25 +407,56 @@ nav ul li a {
     line-height: 1.1;
     text-transform: uppercase;
     color: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--blue-gradient-end) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-sm);
 }
 
 .hero-text p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin-bottom: var(--spacing-md);
+    color: var(--gray-medium);
+    line-height: 1.7;
 }
 
 .scripture-reference {
     font-style: italic;
-    color: var(--accent);
-    font-weight: 500;
+    color: var(--blue-gradient-end);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: linear-gradient(135deg, rgba(116, 192, 252, 0.1) 0%, rgba(51, 154, 240, 0.05) 100%);
+    border-left: 4px solid var(--blue-light);
+    border-radius: var(--border-radius-sm);
 }
 
 .hero-image {
     flex: 1;
     position: relative;
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--box-shadow-lg);
     overflow: hidden;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-lg);
+    animation: slideInRight 0.8s ease-out 0.2s both;
+    transition: all var(--transition-smooth);
+}
+
+.hero-image:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--box-shadow-blue);
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .hero-image::after {
@@ -226,7 +471,8 @@ nav ul li a {
 
 /* ======= ABOUT SECTION ======= */
 .about {
-    padding: var(--spacing-xl) 0;
+    padding: calc(var(--spacing-xl) * 1.8) 0;
+    margin-top: calc(var(--spacing-lg) * 1.5);
 }
 
 .about-cards {
@@ -234,79 +480,165 @@ nav ul li a {
     gap: var(--spacing-md);
 }
 
+/* ======= TARJETAS MODERNIZADAS ======= */
 .card {
     flex: 1;
-    background-color: white;
-    border-radius: var(--border-radius);
+    background: var(--white-pure);
+    border-radius: var(--border-radius-lg);
     overflow: hidden;
     box-shadow: var(--box-shadow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all var(--transition-smooth);
+    position: relative;
+    border: 1px solid rgba(116, 192, 252, 0.1);
+}
+
+/* Efecto de iluminación suave */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(116, 192, 252, 0.1), transparent);
+    transition: left var(--transition-slow);
+    z-index: 1;
+}
+
+.card:hover::before {
+    left: 100%;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: var(--box-shadow-blue);
+    border-color: var(--blue-light);
 }
 
 .card-image {
-    height: 200px;
+    height: 220px;
     overflow: hidden;
+    position: relative;
+}
+
+.card-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(116, 192, 252, 0.1) 100%);
+    opacity: 0;
+    transition: opacity var(--transition-smooth);
+}
+
+.card:hover .card-image::after {
+    opacity: 1;
 }
 
 .card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform var(--transition-slow);
 }
 
 .card:hover .card-image img {
-    transform: scale(1.05);
+    transform: scale(1.08) rotate(1deg);
 }
 
 .card-content {
     padding: var(--spacing-md);
+    position: relative;
+    z-index: 2;
 }
 
 .card-title {
     font-family: var(--font-primary);
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: var(--spacing-sm);
     color: var(--primary);
     font-weight: 700;
+    transition: color var(--transition-smooth);
 }
 
-/* ======= WORSHIP DAYS SECTION ======= */
+.card:hover .card-title {
+    color: var(--blue-gradient-end);
+}
+
+/* Indicador visual de interactividad */
+.card::after {
+    content: '→';
+    position: absolute;
+    bottom: var(--spacing-sm);
+    right: var(--spacing-sm);
+    font-size: 1.2rem;
+    color: var(--blue-light);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all var(--transition-smooth);
+}
+
+.card:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ======= WORSHIP DAYS SECTION MODERNIZADA ======= */
 .worship-days {
     padding: var(--spacing-xl) 0;
-    background-color: #f9f9f9;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, rgba(116, 192, 252, 0.05) 100%);
+    position: relative;
 }
 
 .worship-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: var(--spacing-md);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
 }
 
 .worship-card {
-    background-color: white;
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius);
+    background: var(--white-pure);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
     box-shadow: var(--box-shadow);
-    text-align: center;
-    transition: transform 0.3s ease;
+    transition: all var(--transition-smooth);
+    position: relative;
+    border: 1px solid rgba(116, 192, 252, 0.1);
+    overflow: hidden;
+}
+
+.worship-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--blue-light), var(--blue-gradient-end));
+    transform: scaleX(0);
+    transition: transform var(--transition-smooth);
+}
+
+.worship-card:hover::before {
+    transform: scaleX(1);
 }
 
 .worship-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: var(--box-shadow-blue);
+    border-color: var(--blue-light);
 }
 
 .worship-card .day {
     font-family: var(--font-primary);
     font-weight: 700;
     font-size: 1.8rem;
-    color: var(--accent);
+    color: var(--blue-gradient-end);
     margin-bottom: var(--spacing-xs);
+    text-align: center;
+}
 }
 
 .worship-card h3 {
@@ -568,16 +900,14 @@ nav ul li a {
     background-color: #25D366;
     color: white;
     padding: 1rem 1.5rem;
-    border-radius: 10px;
+    border-radius: 8px;
     text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
+    transition: opacity 0.2s ease;
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2);
 }
 
 .whatsapp-button:hover {
-    background-color: #1ea952;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
+    opacity: 0.9;
 }
 
 .whatsapp-button svg {
@@ -588,11 +918,11 @@ nav ul li a {
 
 .whatsapp-button span {
     font-family: var(--font-primary);
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .whatsapp-button .phone-number {
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.5px;
 }
 
@@ -851,30 +1181,29 @@ nav ul li a {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    background-color: var(--accent);
+    background-color: var(--blue-light);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     padding: 0.8rem 1.5rem;
     font-family: var(--font-primary);
-    font-weight: 600;
+    font-weight: 500;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: opacity 0.2s ease;
     align-self: flex-start;
 }
 
 .btn-send svg {
-    transition: transform 0.3s ease;
+    transition: none;
 }
 
 .btn-send:hover {
-    background-color: #c69500;
-    box-shadow: 0 5px 15px rgba(218, 165, 32, 0.3);
+    opacity: 0.9;
 }
 
 .btn-send:hover svg {
-    transform: translateX(3px);
+    transform: none;
 }
 
 /* Copyright */
@@ -990,14 +1319,14 @@ nav ul li a {
     display: flex;
     align-items: center;
     gap: 0.7rem;
-    background-color: #f1f5f9;
+    background-color: #f8f9fa;
     color: var(--primary);
     padding: 0.7rem 1rem;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: opacity 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -1008,9 +1337,7 @@ nav ul li a {
 }
 
 .map-button:hover {
-    background-color: #e2e8f0;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
 }
 
 .map-button.google-maps {
@@ -1019,7 +1346,7 @@ nav ul li a {
 }
 
 .map-button.google-maps:hover {
-    background-color: #D2E3FC;
+    opacity: 0.9;
 }
 
 .map-button.waze {
@@ -1028,7 +1355,7 @@ nav ul li a {
 }
 
 .map-button.waze:hover {
-    background-color: #00aaff;
+    opacity: 0.9;
 }
 
 .map-button.apple-maps {
@@ -1037,7 +1364,7 @@ nav ul li a {
 }
 
 .map-button.apple-maps:hover {
-    background-color: #E5E5E7;
+    opacity: 0.9;
 }
 
 .map-info-note {

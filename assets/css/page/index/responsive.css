@@ -1,24 +1,63 @@
 /* 
- * Estilos responsivos para la landing page de Iglesia Adventista
+ * Estilos responsivos modernos para la landing page de Iglesia Adventista
  * Autor: Generado para el proyecto Magnolia
- * Versión: 1.0
+ * Versión: 2.0 - Modernizado con breakpoints flexibles y animaciones
  */
 
-/* Tablets grandes y dispositivos medianos (menores a 1200px) */
-@media screen and (max-width: 1200px) {
-    .container {
-        max-width: 960px;
-    }
-}
+/* ======= BREAKPOINTS MODERNOS ======= */
 
-/* Tablets y dispositivos medianos (menores a 992px) */
-@media screen and (max-width: 992px) {
+/* Desktop extra grande (>1400px) */
+@media screen and (min-width: 1400px) {
     .container {
-        max-width: 720px;
+        max-width: 1320px;
     }
     
     .hero-text h2 {
+        font-size: 4rem;
+    }
+    
+    .section-title {
         font-size: 3rem;
+    }
+}
+
+/* Desktop grande (1200px - 1399px) */
+@media screen and (max-width: 1399px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+/* Desktop estándar (992px - 1199px) */
+@media screen and (max-width: 1199px) {
+    .container {
+        max-width: 960px;
+    }
+    
+    .hero-text h2 {
+        font-size: 3.2rem;
+    }
+    
+    .navbar .container {
+        padding: 0 var(--spacing-md);
+    }
+}
+
+/* Tablets horizontales (768px - 991px) */
+@media screen and (max-width: 991px) {
+    .container {
+        max-width: 720px;
+        padding: 0 var(--spacing-md);
+    }
+    
+    .hero-content {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+    
+    .hero-text h2 {
+        font-size: 2.8rem;
     }
     
     .section-title {
@@ -27,50 +66,117 @@
     
     .worship-cards {
         grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+    
+    /* Animaciones más suaves en tablets */
+    .card:hover {
+        transform: translateY(-8px) scale(1.01);
     }
 }
 
-/* Tablets pequeñas y móviles grandes (menores a 768px) */
-@media screen and (max-width: 768px) {
+/* Tablets verticales y móviles grandes (576px - 767px) */
+@media screen and (max-width: 767px) {
     .container {
         max-width: 540px;
+        padding: 0 var(--spacing-sm);
     }
     
+    /* NAVBAR MÓVIL MODERNIZADO */
     .navbar {
-        padding: 1rem 0;
+        padding: var(--spacing-sm) 0;
+        background: linear-gradient(135deg, var(--blue-light) 0%, var(--blue-gradient-end) 100%);
     }
     
     .navbar .container {
-        flex-wrap: wrap;
+        position: relative;
     }
     
+    /* Logo principal móvil */
+    .logo {
+        flex: 1;
+    }
+    
+    .logo h1 {
+        font-size: 1rem;
+        line-height: 1.2;
+    }
+    
+    .logo .subtitle {
+        font-size: 0.75rem;
+    }
+    
+    /* Logo imagen móvil */
+    .navbar-logo {
+        margin-left: var(--spacing-sm);
+        margin-right: var(--spacing-xs);
+    }
+    
+    .logo-img {
+        height: 40px;
+        max-width: 120px;
+    }
+    
+    /* NAVEGACIÓN MÓVIL MODERNIZADA */
     nav {
         display: none;
-        width: 100%;
-        order: 3;
-        margin-top: 1rem;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+        backdrop-filter: blur(20px);
+        border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+        box-shadow: var(--box-shadow-lg);
+        z-index: 1000;
+        animation: slideDown 0.3s ease;
     }
     
-    nav.active {
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    nav.mobile-active {
         display: block;
     }
     
     nav ul {
         flex-direction: column;
-    }
-    
-    nav ul li {
-        margin: 0;
+        padding: var(--spacing-md);
+        gap: 0;
     }
     
     nav ul li a {
         display: block;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: var(--spacing-sm);
+        color: var(--primary);
+        border-radius: var(--border-radius-sm);
+        margin-bottom: var(--spacing-xs);
+        transition: all var(--transition-smooth);
+    }
+    
+    nav ul li a:hover {
+        background: linear-gradient(135deg, var(--blue-light), var(--blue-gradient-end));
+        color: var(--white-pure);
+        transform: translateX(10px);
     }
     
     .menu-toggle {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Hero section móvil con espaciado mejorado */
+    .hero {
+        padding: var(--spacing-lg) 0 calc(var(--spacing-xl) * 1.2);
     }
     
     .hero-content {
@@ -84,6 +190,12 @@
     .hero-image {
         order: 1;
         margin-bottom: var(--spacing-md);
+    }
+    
+    /* About section móvil con espaciado adicional */
+    .about {
+        padding: calc(var(--spacing-xl) * 1.2) 0;
+        margin-top: var(--spacing-md);
     }
     
     .about-cards {
@@ -117,8 +229,28 @@
         font-size: 2.5rem;
     }
     
+    /* Espaciado extra para móviles pequeños */
+    .hero {
+        padding: var(--spacing-lg) 0 calc(var(--spacing-xl) * 1.5);
+    }
+    
+    .about {
+        padding: calc(var(--spacing-xl) * 1.5) 0;
+        margin-top: calc(var(--spacing-lg) * 1.2);
+    }
+    
     .worship-cards {
         grid-template-columns: 1fr;
+    }
+    
+    /* Logo aún más pequeño en móviles */
+    .logo-img {
+        height: 35px;
+        max-width: 100px;
+    }
+    
+    .navbar-logo {
+        margin-left: var(--spacing-xs);
     }
 }
 

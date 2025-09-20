@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="assets/css/page/index/style.css">
     <link rel="stylesheet" href="assets/css/page/index/responsive.css">
     <link rel="stylesheet" href="assets/css/page/departamento/departamentos.css">
+    <link rel="stylesheet" href="assets/css/components/modern-utilities.css">
     
     <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,16 +25,19 @@
     <header class="navbar">
         <div class="container">
             <div class="logo">
-                <h1>IGLESIA ADVENTISTA DEL SÉPTIMO DÍA</h1>
-                <p class="subtitle">MAGNOLIA BAYAMÓN</p>
+                <h2 data-translate="church-title">IGLESIA ADVENTISTA DEL SÉPTIMO DÍA</h2>
+                <p class="subtitle" data-translate="church-subtitle">MAGNOLIA BAYAMÓN</p>
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.html">Sobre Nosotros</a></li>
-                    <li><a href="departamentos.html" class="active">Departamentos</a></li>
-                    <li><a href="club.html">Club</a></li>
+                    <li><a href="index.html" data-translate="nav-about">Sobre Nosotros</a></li>
+                    <li><a href="departamentos.html" class="active" data-translate="nav-departments">Departamentos</a></li>
+                    <li><a href="club.html" data-translate="nav-club">Club</a></li>
                 </ul>
             </nav>
+            <div class="navbar-logo">
+                <img src="assets/images/Logo.png" alt="Logo IASD Magnolia" class="logo-img">
+            </div>
             <button class="menu-toggle" aria-label="Menú">
                 <span></span>
                 <span></span>
@@ -41,6 +45,11 @@
             </button>
         </div>
     </header>
+
+    <!-- Selector de idioma flotante -->
+    <div class="language-selector">
+        <button id="language-toggle" class="language-btn" data-translate="language-btn">EN</button>
+    </div>
 
     <!-- Sección Departamentos -->
     <section class="departments">
@@ -161,5 +170,7 @@
     <script src="assets/js/components/index/footer-loader.js"></script>
     <script src="assets/js/components/index/main.js"></script>
     <script src="assets/js/components/index/copy-coordinates.js"></script>
+    <script src="assets/js/components/index/modern-effects.js"></script>
+    <script src="assets/js/components/index/language-manager.js"></script>
 </body>
 </html>
