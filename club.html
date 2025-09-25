@@ -26,40 +26,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Barra de navegación -->
-    <header class="navbar">
-        <div class="container">
-            <div class="logo">
-                <h2 data-translate="church-title">IGLESIA ADVENTISTA DEL SÉPTIMO DÍA</h2>
-                <p class="subtitle" data-translate="church-subtitle">MAGNOLIA BAYAMÓN</p>
-            </div>
-            <nav>
-                
-                <ul>
-                    <li><a href="index.html" data-translate="nav-about">Sobre Nosotros</a></li>
-                    <li><a href="departamentos.html" data-translate="nav-departments">Departamentos</a></li>
-                    <li><a href="club.html" class="active" data-translate="nav-club">Club</a></li>
-                </ul>
-            </nav>
-            <div class="navbar-logo">
-                <img src="assets/images/Logo.png" alt="Logo IASD Magnolia" class="logo-img">
-            </div>
-            <button class="menu-toggle" aria-label="Menú">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </header>
+    <!-- Header será cargado dinámicamente -->
+    <div id="header-container"></div>
 
     <!-- Sección Clubs -->
     <section class="clubs">
         <div class="container">
-            <h2 class="section-title" data-translate="clubs-title">Nuestros Clubs</h2>
-            
+        <br><br>            
             <!-- Botón de Inscripción Verde -->
             <div class="inscription-button-container">
-                <button class="inscription-btn" id="open-inscription" data-translate="inscription-btn">
+                <button class="inscription-btn" id="open-inscription">
                     📝 Inscripción
                 </button>
             </div>
@@ -74,27 +50,27 @@
                                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                             </svg>
                         </div>
-                        <h3 data-translate="aventureros-title">Los Aventureros</h3>
-                        <div class="age-range" data-translate="aventureros-age">6 - 9 años</div>
+                        <h3>Los Aventureros</h3>
+                        <div class="age-range">6 - 9 años</div>
                     </div>
                     <div class="club-content">
-                        <p data-translate="aventureros-description">Un programa diseñado para los más pequeños, donde aprenden sobre Jesús a través de juegos, manualidades y actividades al aire libre.</p>
+                        <p>Un programa diseñado para los más pequeños, donde aprenden sobre Jesús a través de juegos, manualidades y actividades al aire libre.</p>
                         <div class="club-features">
                             <div class="feature">
                                 <span class="feature-icon">🎨</span>
-                                <span data-translate="aventureros-feature1">Manualidades</span>
+                                <span>Manualidades</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">🎵</span>
-                                <span data-translate="aventureros-feature2">Música y Cantos</span>
+                                <span>Música y Cantos</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">🌱</span>
-                                <span data-translate="aventureros-feature3">Naturaleza</span>
+                                <span>Naturaleza</span>
                             </div>
                         </div>
                         <div class="club-schedule">
-                            <strong data-translate="schedule-label">Reuniones:</strong> <span data-translate="schedule">Sábados 5:00 PM</span>
+                            <strong>Reuniones:</strong> <span>Sábados 5:00 PM</span>
                         </div>
                     </div>
                 </div>
@@ -107,27 +83,27 @@
                                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                             </svg>
                         </div>
-                        <h3 data-translate="conquistadores-title">Conquistadores</h3>
-                        <div class="age-range" data-translate="conquistadores-age">10 - 15 años</div>
+                        <h3>Conquistadores</h3>
+                        <div class="age-range">10 - 15 años</div>
                     </div>
                     <div class="club-content">
-                        <p data-translate="conquistadores-description">Programa integral que desarrolla habilidades prácticas, espirituales y sociales a través de especialidades, campamentos y servicio comunitario.</p>
+                        <p>Programa integral que desarrolla habilidades prácticas, espirituales y sociales a través de especialidades, campamentos y servicio comunitario.</p>
                         <div class="club-features">
                             <div class="feature">
                                 <span class="feature-icon">🏕️</span>
-                                <span data-translate="conquistadores-feature1">Campamentos</span>
+                                <span>Campamentos</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">🎖️</span>
-                                <span data-translate="conquistadores-feature2">Especialidades</span>
+                                <span>Especialidades</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">🤝</span>
-                                <span data-translate="conquistadores-feature3">Servicio Comunitario</span>
+                                <span>Servicio Comunitario</span>
                             </div>
                         </div>
                         <div class="club-schedule">
-                            <strong data-translate="schedule-label">Reuniones:</strong> <span data-translate="schedule">Sábados 5:00 PM</span>
+                            <strong>Reuniones:</strong> <span>Sábados 5:00 PM</span>
                         </div>
                     </div>
                 </div>
@@ -140,27 +116,27 @@
                                 <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 9.74s9-4.19 9-9.74V7L12 2z"/>
                             </svg>
                         </div>
-                        <h3 data-translate="cadetes-title">Cadetes</h3>
-                        <div class="age-range" data-translate="cadetes-age">16 - 21 años</div>
+                        <h3>Cadetes</h3>
+                        <div class="age-range">16 - 21 años</div>
                     </div>
                     <div class="club-content">
-                        <p data-translate="cadetes-description">Programa avanzado para jóvenes que buscan desarrollar liderazgo cristiano y prepararse para el servicio en la iglesia y la comunidad.</p>
+                        <p>Programa avanzado para jóvenes que buscan desarrollar liderazgo cristiano y prepararse para el servicio en la iglesia y la comunidad.</p>
                         <div class="club-features">
                             <div class="feature">
                                 <span class="feature-icon">👥</span>
-                                <span data-translate="cadetes-feature1">Liderazgo</span>
+                                <span>Liderazgo</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">📚</span>
-                                <span data-translate="cadetes-feature2">Estudio Avanzado</span>
+                                <span>Estudio Avanzado</span>
                             </div>
                             <div class="feature">
                                 <span class="feature-icon">🚀</span>
-                                <span data-translate="cadetes-feature3">Proyectos Misioneros</span>
+                                <span>Proyectos Misioneros</span>
                             </div>
                         </div>
                         <div class="club-schedule">
-                            <strong data-translate="schedule-label">Reuniones:</strong> <span data-translate="schedule">Sábados 5:00 PM</span>
+                            <strong>Reuniones:</strong> <span>Sábados 5:00 PM</span>
                         </div>
                     </div>
                 </div>
@@ -179,8 +155,8 @@
                             <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-1 16H9V7h9v14z"/>
                         </svg>
                     </div>
-                    <h3 data-translate="manual-title">Manual de Actividades</h3>
-                    <p data-translate="manual-description">Cada club sigue un programa estructurado con actividades diseñadas para el desarrollo integral de nuestros jóvenes en un ambiente cristiano.</p>
+                                        <h3>Manual de Actividades</h3>
+                    <p>Cada club sigue un programa estructurado con actividades diseñadas para el desarrollo integral de nuestros jóvenes en un ambiente cristiano.</p>
                 </div>
                 
                 <div class="info-card">
@@ -189,8 +165,8 @@
                             <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
                         </svg>
                     </div>
-                    <h3 data-translate="leaders-title">Líderes Capacitados</h3>
-                    <p data-translate="leaders-description">Nuestros directores y consejeros están certificados y comprometidos con el desarrollo espiritual y personal de cada participante.</p>
+                                        <h3>Líderes Capacitados</h3>
+                    <p>Nuestros directores y consejeros están certificados y comprometidos con el desarrollo espiritual y personal de cada participante.</p>
                 </div>
             </div>
         </div>
@@ -212,10 +188,10 @@
     <script src="assets/js/components/club/club-interative.js"></script>
     
     <!-- Scripts de página necesarios para footer y navegación -->
+    <script src="assets/js/components/index/header-loader.js"></script>
     <script src="assets/js/components/index/footer-loader.js"></script>
     <script src="assets/js/components/index/main.js"></script>
     <script src="assets/js/components/index/modern-effects.js"></script>
-    <script src="assets/js/components/index/language-manager.js"></script>
 
 
 

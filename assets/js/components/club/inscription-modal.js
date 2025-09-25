@@ -22,12 +22,7 @@ class InscriptionModal {
         this.createModal();
         this.attachEventListeners();
         
-        // Escuchar cambios de idioma
-        document.addEventListener('languageChanged', () => {
-            if (this.modal && this.modal.classList.contains('active')) {
-                setTimeout(() => this.applyModalTranslations(), 100);
-            }
-        });
+
         
         console.log('✅ Inscription Modal inicializado correctamente');
     }
@@ -144,7 +139,7 @@ class InscriptionModal {
     }
 
     createChildForm(childNumber) {
-        // Usar el template HTML con data-translate en lugar del JavaScript hardcodeado
+
         const childFormTemplate = this.templates.get('child-form-template');
         const removeButtonTemplate = this.templates.get('remove-button-template');
         
@@ -394,8 +389,7 @@ class InscriptionModal {
 
         this.addValidationToNewChild(childFormElement);
         
-        // Aplicar traducciones al nuevo formulario de hijo
-        this.applyModalTranslations();
+
         
         // Reconfigurar calculadora inmediatamente para el nuevo hijo
         this.reconfigureAgeCalculator();
@@ -496,7 +490,7 @@ class InscriptionModal {
             document.body.style.overflow = 'hidden';
             
             // Aplicar traducciones si el language manager está disponible
-            this.applyModalTranslations();
+
             
             console.log('📋 Modal de inscripción abierto');
         } else {
@@ -504,37 +498,7 @@ class InscriptionModal {
         }
     }
 
-    applyModalTranslations() {
-        // Verificar si existe el language manager
-        if (window.languageManager && typeof window.languageManager.applyTranslations === 'function') {
-            // Aplicar traducciones al modal específicamente
-            window.languageManager.applyTranslations(this.modal);
-            
-            // También forzar traducciones en elementos select dinámicos
-            if (typeof window.languageManager.getCurrentTranslations === 'function') {
-                const currentTranslations = window.languageManager.getCurrentTranslations();
-                this.modal.querySelectorAll('select option[data-translate]').forEach(option => {
-                    const key = option.getAttribute('data-translate');
-                    if (key && currentTranslations[key]) {
-                        option.textContent = currentTranslations[key];
-                    }
-                });
-            }
-            
-            console.log('🌐 Traducciones aplicadas al modal');
-        } else if (window.LanguageManager) {
-            // Fallback para la clase LanguageManager
-            try {
-                const languageManager = new window.LanguageManager();
-                languageManager.applyTranslations(this.modal);
-                console.log('🌐 Traducciones aplicadas al modal (fallback)');
-            } catch (error) {
-                console.warn('⚠️ No se pudieron aplicar las traducciones al modal:', error);
-            }
-        } else {
-            console.warn('⚠️ Language manager no disponible para el modal');
-        }
-    }
+
 
     closeModal() {
         if (this.modal) {

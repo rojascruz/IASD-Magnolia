@@ -208,7 +208,11 @@ ul {
 /* Navegación - MODERNIZADA */
 nav ul {
     display: flex;
-    gap: var(--spacing-md);
+    gap: 8px; /* Espacio más pequeño entre elementos para evitar solapamiento */
+}
+
+nav ul li {
+    display: flex; /* Mejora la alineación de los elementos */
 }
 
 nav ul li a {
@@ -218,11 +222,16 @@ nav ul li a {
     text-transform: uppercase;
     letter-spacing: 1px;
     color: #2c2c2c; /* Negro suave */
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: 12px 20px; /* Padding más grande para área clickeable más amplia */
     border-radius: var(--border-radius-sm);
     transition: all var(--transition-smooth);
     position: relative;
     overflow: hidden;
+    display: block; /* Asegura que el área completa sea clickeable */
+    min-height: 44px; /* Altura mínima para mejorar usabilidad en móvil */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Efecto hover moderno para links de navegación */
@@ -233,7 +242,7 @@ nav ul li a::before {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(116, 192, 252, 0.3), transparent);
     transition: left var(--transition-smooth);
 }
 
@@ -243,11 +252,11 @@ nav ul li a:hover::before {
 
 nav ul li a:hover,
 nav ul li a.active {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(116, 192, 252, 0.15); /* Fondo azul suave */
     backdrop-filter: blur(10px);
     transform: translateY(-2px);
-    color: var(--white-pure);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: var(--blue-gradient-end); /* Color azul consistente */
+    box-shadow: 0 4px 12px rgba(51, 154, 240, 0.25); /* Sombra azul */
 }
 
 /* Logo en el navbar (parte superior derecha) - MODERNIZADO */

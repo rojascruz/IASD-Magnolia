@@ -155,16 +155,21 @@
     
     nav ul li a {
         display: block;
-        padding: var(--spacing-sm);
+        padding: 16px 20px; /* Padding más generoso para área clickeable más amplia */
         color: var(--primary);
         border-radius: var(--border-radius-sm);
         margin-bottom: var(--spacing-xs);
         transition: all var(--transition-smooth);
+        min-height: 48px; /* Altura mínima recomendada para botones táctiles */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
     
     nav ul li a:hover {
-        background: linear-gradient(135deg, var(--blue-light), var(--blue-gradient-end));
-        color: var(--white-pure);
+        background: linear-gradient(135deg, var(--blue-light), rgba(116, 192, 252, 0.2));
+        color: var(--blue-gradient-end); /* Mantener color azul consistente */
         transform: translateX(10px);
     }
     
@@ -265,4 +270,60 @@
 
 .menu-toggle.active span:nth-child(3) {
     transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Responsive adicional para móviles extremadamente pequeños */
+@media screen and (max-width: 320px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .logo h1, .logo h2 {
+        font-size: 0.7rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .logo .subtitle {
+        font-size: 0.65rem;
+    }
+    
+    .logo-img {
+        height: 30px;
+        max-width: 80px;
+    }
+    
+    .menu-toggle {
+        padding: 6px;
+    }
+    
+    .menu-toggle span {
+        width: 20px;
+        height: 2px;
+        margin: 3px 0;
+    }
+    
+    nav ul li a {
+        padding: 12px 15px;
+        font-size: 0.85rem;
+        min-height: 42px;
+    }
+}
+
+/* Mejoras para pantallas táctiles */
+@media (hover: none) and (pointer: coarse) {
+    /* Asegurar que los botones tengan el tamaño mínimo táctil recomendado */
+    nav ul li a {
+        min-height: 48px;
+        min-width: 48px;
+    }
+    
+    .inscription-btn {
+        min-height: 48px;
+        min-width: 48px;
+    }
+    
+    .menu-toggle {
+        min-height: 48px;
+        min-width: 48px;
+    }
 }
