@@ -27,79 +27,144 @@ document.addEventListener('DOMContentLoaded', function() {
         return '';
     }
     
-    // FUNCIÓN: Procesar cambio de fecha de nacimiento
+    // FUNCIÓN: Procesar cambio de fecha de nacimiento - VERSIÓN MEJORADA PARA MÓVILES
     function procesarFechaNacimiento(campoFecha) {
-        const numeroHijo = campoFecha.name.replace('childBirthdate_', '');
-        
-        // Buscar campos con más robustez
-        let campoEdad = document.querySelector(`input[name="childAge_${numeroHijo}"]`);
-        let campoClub = document.querySelector(`select[name="selectedClub_${numeroHijo}"]`);
-        
-        // Si no encuentra los campos, buscar por proximidad (mismo contenedor)
-        if (!campoEdad || !campoClub) {
-            const parentForm = campoFecha.closest('.child-form');
-            if (parentForm) {
-                campoEdad = parentForm.querySelector('input[name*="childAge_"]');
-                campoClub = parentForm.querySelector('select[name*="selectedClub_"]');
+        // Pequeño delay para asegurar que el valor se actualice en móviles
+        setTimeout(() => {
+            if (!campoFecha.value) {
+                console.log('❌ No hay fecha seleccionada');
+                return;
             }
-        }
-        
-        if (!campoFecha.value) {
-            console.log('❌ No hay fecha seleccionada');
-            return;
-        }
-        
-        console.log(`📅 Procesando fecha para hijo ${numeroHijo}: ${campoFecha.value}`);
-        console.log(`🔍 Campo edad encontrado:`, !!campoEdad, campoEdad?.name);
-        console.log(`🔍 Campo club encontrado:`, !!campoClub, campoClub?.name);
-        
-        // CALCULAR EDAD
-        const edad = calcularEdadExacta(campoFecha.value);
-        console.log(`🧮 Edad calculada: ${edad} años`);
-        
-        // VALIDAR EDAD
-        if (edad < 0) {
-            alert('⚠️ La fecha de nacimiento no puede ser en el futuro.');
-            campoFecha.value = '';
-            return;
-        }
-        
-        if (edad > 50) {
-            alert('⚠️ Por favor, verifique la fecha de nacimiento.');
-            campoFecha.value = '';
-            return;
-        }
-        
-        // INSERTAR EDAD EN EL CAMPO
-        if (campoEdad) {
-            campoEdad.value = edad;
-            campoEdad.style.backgroundColor = '#e8f5e8';
-            campoEdad.style.border = '2px solid #4CAF50';
-            campoEdad.readOnly = true;
-            console.log(`✅ Edad ${edad} insertada en el campo ${campoEdad.name}`);
-        } else {
-            console.error(`❌ No se encontró campo de edad para hijo ${numeroHijo}`);
-        }
-        
-        // SUGERIR CLUB AUTOMÁTICAMENTE
-        if (campoClub && edad >= 6 && edad <= 21) {
-            const clubSugerido = sugerirClub(edad);
-            if (clubSugerido) {
-                campoClub.value = clubSugerido;
-                campoClub.style.backgroundColor = '#fff3cd';
-                campoClub.style.border = '2px solid #ffc107';
-                console.log(`🎯 Club ${clubSugerido} sugerido para ${campoClub.name}`);
+
+            const numeroHijo = campoFecha.name.replace('childBirthdate_', '');
+            
+            // Buscar campos con múltiples métodos para mayor robustez
+            let campoEdad = document.querySelector(`input[name="childAge_${numeroHijo}"]`);
+            let campoClub = document.querySelector(`select[name="selectedClub_${numeroHijo}"]`);
+            
+            // Método 2: Buscar por proximidad en el mismo contenedor
+            if (!campoEdad || !campoClub) {
+                const parentForm = campoFecha.closest('.child-form');
+                if (parentForm) {
+                    campoEdad = parentForm.querySelector('input[name*="childAge_"]');
+                    campoClub = parentForm.querySelector('select[name*="selectedClub_"]');
+                }
             }
-        } else if (!campoClub) {
-            console.error(`❌ No se encontró campo de club para hijo ${numeroHijo}`);
-        }
-        
-        // // MOSTRAR CONFIRMACIÓN
-        // if (edad >= 6 && edad <= 21) {
-        //     alert(`✅ Edad calculada: ${edad} años\n🎯 Club sugerido automáticamente`);
-        // } else {
-        //     alert(`✅ Edad calculada: ${edad} años\n⚠️ Edad fuera del rango de clubs (6-21 años)`);
-        // }
+            
+            // Método 3: Buscar por índice si los otros fallan
+            if (!campoEdad || !campoClub) {
+                const allAgeFields = document.querySelectorAll('input[name*="childAge_"]');
+                const allClubFields = document.querySelectorAll('select[name*="selectedClub_"]');
+                const allDateFields = document.querySelectorAll('input[name*="childBirthdate_"]');
+                
+                const index = Array.from(allDateFields).indexOf(campoFecha);
+                if (index >= 0) {
+                    campoEdad = allAgeFields[index];
+                    campoClub = allClubFields[index];
+                }
+            }
+            
+            console.log(`📅 Procesando fecha para hijo ${numeroHijo}: ${campoFecha.value}`);
+            console.log(`🔍 Campo edad encontrado:`, !!campoEdad, campoEdad?.name);
+            console.log(`🔍 Campo club encontrado:`, !!campoClub, campoClub?.name);
+            
+            // CALCULAR EDAD con validación adicional
+            const fechaValue = campoFecha.value;
+            if (!fechaValue || fechaValue === '') {
+                console.log('❌ Valor de fecha inválido');
+                return;
+            }
+            
+            const edad = calcularEdadExacta(fechaValue);
+            console.log(`🧮 Edad calculada: ${edad} años para fecha: ${fechaValue}`);
+            
+            // VALIDAR EDAD
+            if (isNaN(edad) || edad < 0) {
+                // Usar setTimeout para mostrar alert después del cambio de campo en móviles
+                setTimeout(() => {
+                    alert('⚠️ La fecha de nacimiento no puede ser en el futuro.');
+                    campoFecha.value = '';
+                    campoFecha.focus();
+                }, 100);
+                return;
+            }
+            
+            if (edad > 50) {
+                setTimeout(() => {
+                    alert('⚠️ Por favor, verifique la fecha de nacimiento.');
+                    campoFecha.value = '';
+                    campoFecha.focus();
+                }, 100);
+                return;
+            }
+            
+            // INSERTAR EDAD EN EL CAMPO con animación visual
+            if (campoEdad) {
+                // Limpiar estilos anteriores
+                campoEdad.style.transition = 'all 0.3s ease';
+                
+                campoEdad.value = edad;
+                campoEdad.style.backgroundColor = '#e8f5e8';
+                campoEdad.style.border = '2px solid #4CAF50';
+                campoEdad.readOnly = true;
+                
+                // Efecto visual de actualización
+                campoEdad.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    campoEdad.style.transform = 'scale(1)';
+                }, 200);
+                
+                console.log(`✅ Edad ${edad} insertada en el campo ${campoEdad.name}`);
+            } else {
+                console.error(`❌ No se encontró campo de edad para hijo ${numeroHijo}`);
+            }
+            
+            // SUGERIR CLUB AUTOMÁTICAMENTE con validación mejorada
+            if (campoClub && edad >= 6 && edad <= 21) {
+                const clubSugerido = sugerirClub(edad);
+                if (clubSugerido) {
+                    campoClub.value = clubSugerido;
+                    campoClub.style.backgroundColor = '#fff3cd';
+                    campoClub.style.border = '2px solid #ffc107';
+                    campoClub.style.transition = 'all 0.3s ease';
+                    
+                    // Disparar evento de cambio para otros listeners
+                    const event = new Event('change', { bubbles: true });
+                    campoClub.dispatchEvent(event);
+                    
+                    console.log(`🎯 Club ${clubSugerido} sugerido para ${campoClub.name}`);
+                }
+            } else if (!campoClub) {
+                console.error(`❌ No se encontró campo de club para hijo ${numeroHijo}`);
+            }
+            
+            // Notificación visual en móviles
+            if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                // Crear notificación temporal para móviles
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #4CAF50;
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    z-index: 10000;
+                    font-size: 14px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                `;
+                notification.textContent = `✅ Edad: ${edad} años`;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 2000);
+            }
+            
+        }, 50); // Pequeño delay para móviles
     }
     
     // FUNCIÓN: Configurar listeners para fechas
@@ -124,9 +189,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 procesarFechaNacimiento(this);
             };
             
-            // Agregar listeners tanto para change como input
+            // Agregar listeners tanto para change como input y eventos específicos de móviles
             campo.addEventListener('change', campo._calculadoraEdad);
             campo.addEventListener('input', campo._calculadoraEdad);
+            campo.addEventListener('blur', campo._calculadoraEdad); // Para móviles
+            campo.addEventListener('focusout', campo._calculadoraEdad); // Para móviles
+            
+            // Eventos específicos para fechas en móviles
+            if (campo.type === 'date') {
+                campo.addEventListener('keyup', campo._calculadoraEdad);
+                campo.addEventListener('paste', () => {
+                    setTimeout(campo._calculadoraEdad, 100);
+                });
+            }
             
             // Marcar como configurado
             campo.setAttribute('data-configured', 'true');
