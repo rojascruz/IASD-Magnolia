@@ -960,9 +960,7 @@ PRÓXIMOS PASOS:
 1. ✅ El PDF se descargó automáticamente
 2. 📧 Se abrió su cliente de correo con el mensaje
 3. 📎 Adjunte manualmente el PDF descargado
-4. ✉️ Envíe el correo
-
-El mensaje ya está preparado profesionalmente para enviar.`;
+4. ✉️ Envíe el correo`;
             } else {
                 message = `Email preparado para ${childCount} ${childText}. 
 
