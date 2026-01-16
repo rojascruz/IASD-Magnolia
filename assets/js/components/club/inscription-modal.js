@@ -762,7 +762,151 @@ class InscriptionModal {
     }
 
     // MÉTODO PROFESIONAL: Envía email con mensaje corto y profesional
-    sendEmailWithPDFInfo(data, pdfGenerated) {
+    // MÉTODO NUEVO: Enviar email automático con PDF adjunto
+    async sendEmailWithPDFInfo(data, pdfGenerated) {
+        console.log('📧 Iniciando envío automático de email...');
+        
+        try {
+            // Verificar si el sistema de email está disponible
+            if (!window.emailSender || !window.emailSender.isInitialized) {
+                console.warn('⚠️ Sistema de email no disponible, usando fallback');
+                this.sendEmailFallback(data, pdfGenerated);
+                return;
+            }
+
+            // Mostrar notificación de progreso
+            if (window.notifications) {
+                window.notifications.info(
+                    '📧 Enviando Email...',
+                    'Preparando y enviando email automáticamente con PDF adjunto...',
+                    { duration: 5000 }
+                );
+            }
+
+            // Convertir datos al formato esperado por EmailSender
+            const emailData = this.formatDataForEmail(data);
+
+            // Si tenemos PDF, necesitamos obtener el blob del último PDF generado
+            let pdfBlob = null;
+            if (pdfGenerated && window.lastGeneratedPDF) {
+                pdfBlob = window.lastGeneratedPDF;
+            } else if (pdfGenerated) {
+                // Intentar regenerar el PDF para obtener el blob
+                pdfBlob = await this.generatePDFBlob(data);
+            }
+
+            if (!pdfBlob) {
+                console.warn('⚠️ No se pudo obtener el PDF, enviando email sin adjunto');
+                // Crear un PDF básico de texto como fallback
+                pdfBlob = this.createFallbackPDF(data);
+            }
+
+            // Enviar email usando EmailSender
+            const result = await window.emailSender.sendInscriptionEmail(emailData, pdfBlob);
+            
+            if (result.success) {
+                // Éxito - mostrar notificación
+                const childCount = data.children.length;
+                const childText = childCount === 1 ? 'hijo' : 'hijos';
+                
+                if (window.notifications) {
+                    window.notifications.success(
+                        '✅ Email Enviado Automáticamente',
+                        `Email enviado exitosamente a ${emailData.parentEmail} con el PDF de inscripción para ${childCount} ${childText}.`,
+                        { duration: 8000 }
+                    );
+                } else {
+                    alert(`✅ Email Enviado\n\nEl email se envió automáticamente a ${emailData.parentEmail} con el PDF adjunto.`);
+                }
+
+                console.log('✅ Email enviado exitosamente:', result);
+
+            } else {
+                throw new Error('Error en el envío del email');
+            }
+
+        } catch (error) {
+            console.error('❌ Error enviando email automático:', error);
+            
+            // Fallback al método manual
+            if (window.notifications) {
+                window.notifications.warning(
+                    '⚠️ Enviando por Método Manual',
+                    'El envío automático falló. Abriendo cliente de correo para envío manual...',
+                    { duration: 6000 }
+                );
+            }
+            
+            this.sendEmailFallback(data, pdfGenerated);
+        }
+
+        // Cerrar modal y resetear formulario
+        this.closeModal();
+        this.resetForm();
+    }
+
+    // Método para formatear datos para EmailSender
+    formatDataForEmail(data) {
+        return {
+            // Información del padre/madre
+            parentName: data.parent.name.split(' ')[0] || '',
+            parentLastname: data.parent.name.split(' ').slice(1).join(' ') || '',
+            parentEmail: data.parent.email,
+            parentPhone: data.parent.phone,
+            parentAddress: data.parent.address,
+            
+            // Información de los hijos
+            children: data.children.map(child => ({
+                name: child.name.split(' ')[0] || '',
+                lastname: child.name.split(' ').slice(1).join(' ') || '',
+                age: parseInt(child.age) || 0,
+                birthdate: child.birthdate,
+                selectedClub: child.club,
+                gender: child.gender,
+                allergies: child.allergies
+            }))
+        };
+    }
+
+    // Método para generar PDF como blob
+    async generatePDFBlob(data) {
+        try {
+            if (window.pdfGeneratorWithLogo) {
+                // Usar el generador profesional para crear blob
+                const doc = await window.pdfGeneratorWithLogo.generateAdvancedBasicPDF(data);
+                if (doc) {
+                    return doc.output('blob');
+                }
+            }
+            return null;
+        } catch (error) {
+            console.error('❌ Error generando PDF blob:', error);
+            return null;
+        }
+    }
+
+    // Crear PDF básico de fallback
+    createFallbackPDF(data) {
+        const pdfContent = `
+Inscripción Club Juvenil - IASD Magnolia
+
+Padre/Madre: ${data.parent.name}
+Email: ${data.parent.email}
+Teléfono: ${data.parent.phone}
+
+Hijos inscritos:
+${data.children.map((child, index) => 
+    `${index + 1}. ${child.name} (${child.age} años) - Club: ${child.club}`
+).join('\n')}
+
+Fecha: ${new Date().toLocaleDateString()}
+        `;
+        
+        return new Blob([pdfContent], { type: 'text/plain' });
+    }
+
+    // Método de fallback (método manual original)
+    sendEmailFallback(data, pdfGenerated) {
         console.log('📧 Preparando email profesional...');
         
         // Crear mensaje profesional y conciso

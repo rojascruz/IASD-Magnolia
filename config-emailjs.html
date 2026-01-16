@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración EmailJS - IASD Magnolia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .config-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; text-align: center; }
+        h2 { color: #4CAF50; border-bottom: 2px solid #4CAF50; padding-bottom: 5px; }
+        .step { 
+            margin: 20px 0; 
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .config-form {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #45a049; }
+        .success { background: #d4edda; color: #155724; padding: 10px; border-radius: 5px; }
+        .error { background: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="config-container">
+        <h1>🔧 Configuración EmailJS para IASD Magnolia</h1>
+        
+        <div class="warning">
+            <strong>⚠️ IMPORTANTE:</strong> Esta configuración debe ser realizada por el administrador del sistema. 
+            Los emails se enviarán automáticamente desde <strong>noreply@tes.com</strong> al email del usuario.
+        </div>
+
+        <h2>📋 Pasos de Configuración</h2>
+        
+        <div class="step">
+            <h3>1. Crear Cuenta en EmailJS</h3>
+            <p>• Ir a <a href="https://emailjs.com" target="_blank">https://emailjs.com</a></p>
+            <p>• Registrarse con email empresarial</p>
+            <p>• Verificar cuenta por email</p>
+        </div>
+
+        <div class="step">
+            <h3>2. Configurar Servicio de Email</h3>
+            <p>• En el dashboard, ir a "Email Services"</p>
+            <p>• Hacer clic en "Add New Service"</p>
+            <p>• Seleccionar "Gmail", "Outlook" o el proveedor que uses</p>
+            <p>• Configurar <strong>noreply@tes.com</strong> como email de envío</p>
+            <p>• Copiar el <strong>Service ID</strong></p>
+        </div>
+
+        <div class="step">
+            <h3>3. Crear Template de Email</h3>
+            <p>• Ir a "Email Templates"</p>
+            <p>• Crear nuevo template con estos parámetros:</p>
+            <div class="code-block">
+Subject: Inscripción Club Juvenil - {{church_name}}
+
+Estimado/a {{to_name}},
+
+{{message}}
+
+Información de contacto:
+• Padre/Madre: {{parent_name}}
+• Teléfono: {{parent_phone}}
+• Cantidad de hijos: {{children_count}}
+
+Detalles de los hijos:
+{{children_details}}
+
+Fecha de inscripción: {{inscription_date}} a las {{inscription_time}}
+
+Saludos cordiales,
+{{church_name}} - {{church_location}}
+Sitio web: {{church_website}}
+
+--- 
+Este email fue enviado automáticamente desde el sistema de inscripción.
+            </div>
+            <p>• Configurar PDF como adjunto: <strong>{{pdf_attachment}}</strong></p>
+            <p>• Copiar el <strong>Template ID</strong></p>
+        </div>
+
+        <div class="step">
+            <h3>4. Obtener Public Key</h3>
+            <p>• Ir a "Account" → "General"</p>
+            <p>• Copiar el <strong>Public Key</strong></p>
+        </div>
+
+        <h2>⚙️ Configuración del Sistema</h2>
+        
+        <div class="config-form">
+            <h3>Ingresar Credenciales de EmailJS</h3>
+            
+            <label for="serviceId">Service ID:</label>
+            <input type="text" id="serviceId" placeholder="service_xxxxxx" value="service_iasd_magnolia">
+            
+            <label for="templateId">Template ID:</label>
+            <input type="text" id="templateId" placeholder="template_xxxxxx" value="template_inscription">
+            
+            <label for="publicKey">Public Key:</label>
+            <input type="text" id="publicKey" placeholder="user_xxxxxxxxxxxxxx">
+            
+            <button onclick="updateConfiguration()">💾 Guardar Configuración</button>
+            <button onclick="testEmailSystem()">🧪 Probar Sistema</button>
+        </div>
+
+        <div id="status"></div>
+
+        <h2>📧 Template de Email Recomendado</h2>
+        <p>Copia este template en EmailJS:</p>
+        <div class="code-block">
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #4CAF50; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
+            <h1>{{church_name}}</h1>
+            <h3>Inscripción Club Juvenil</h3>
+        </div>
+        
+        <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 0 0 10px 10px;">
+            <p>Estimado/a <strong>{{to_name}}</strong>,</p>
+            
+            <p>{{message}}</p>
+            
+            <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                <h4 style="margin-top: 0; color: #4CAF50;">Información de Contacto:</h4>
+                <p><strong>Padre/Madre:</strong> {{parent_name}}</p>
+                <p><strong>Teléfono:</strong> {{parent_phone}}</p>
+                <p><strong>Cantidad de hijos:</strong> {{children_count}}</p>
+            </div>
+            
+            <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                <h4 style="margin-top: 0; color: #856404;">Detalles de los Hijos:</h4>
+                <pre style="white-space: pre-wrap; font-family: Arial;">{{children_details}}</pre>
+            </div>
+            
+            <p style="font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 15px;">
+                <strong>Fecha de inscripción:</strong> {{inscription_date}} a las {{inscription_time}}<br>
+                <strong>Iglesia:</strong> {{church_name}} - {{church_location}}<br>
+                <strong>Sitio web:</strong> {{church_website}}
+            </p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #888;">
+            Este email fue enviado automáticamente desde el sistema de inscripción.
+        </div>
+    </div>
+</body>
+</html>
+        </div>
+
+        <h2>📱 Uso del Sistema</h2>
+        <div class="step">
+            <p><strong>Una vez configurado:</strong></p>
+            <ul>
+                <li>Los usuarios llenan el formulario de inscripción</li>
+                <li>El sistema genera automáticamente el PDF</li>
+                <li>Se envía email automático desde <strong>noreply@tes.com</strong></li>
+                <li>El email llega al usuario con PDF adjunto</li>
+                <li>¡No se requiere intervención manual!</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function updateConfiguration() {
+            const serviceId = document.getElementById('serviceId').value;
+            const templateId = document.getElementById('templateId').value;
+            const publicKey = document.getElementById('publicKey').value;
+            
+            if (!serviceId || !templateId || !publicKey) {
+                showStatus('❌ Todos los campos son requeridos', 'error');
+                return;
+            }
+            
+            // Actualizar el archivo JavaScript (esto requiere acceso al código)
+            const instructions = `
+Para completar la configuración:
+
+1. Editar el archivo: assets/js/components/club/email-sender.js
+2. Buscar las líneas:
+   - this.serviceId = 'service_iasd_magnolia';
+   - this.templateId = 'template_inscription';
+   - this.publicKey = 'YOUR_PUBLIC_KEY';
+
+3. Reemplazar con:
+   - this.serviceId = '${serviceId}';
+   - this.templateId = '${templateId}';
+   - this.publicKey = '${publicKey}';
+
+4. Guardar el archivo y recargar la página.
+            `;
+            
+            showStatus(`✅ Configuración preparada:\n${instructions}`, 'success');
+        }
+        
+        function testEmailSystem() {
+            if (window.emailSender) {
+                window.emailSender.testConfiguration()
+                    .then(success => {
+                        if (success) {
+                            showStatus('✅ Sistema funcionando correctamente', 'success');
+                        } else {
+                            showStatus('❌ Error en la configuración - revisar consola', 'error');
+                        }
+                    });
+            } else {
+                showStatus('❌ Sistema de email no cargado - cargar desde club.html', 'error');
+            }
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.className = type;
+            status.style.whiteSpace = 'pre-line';
+            status.textContent = message;
+        }
+    </script>
+</body>
+</html>

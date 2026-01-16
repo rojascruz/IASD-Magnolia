@@ -145,6 +145,11 @@ class PDFGeneratorWithLogo {
             // Generar nombre del archivo
             const fileName = this.generateFileName(data);
             
+            // NUEVO: Guardar PDF blob para envío por email
+            const pdfBlob = pdf.output('blob');
+            window.lastGeneratedPDF = pdfBlob;
+            console.log('💾 PDF blob guardado para email automático');
+            
             // Descargar
             pdf.save(fileName);
             
@@ -394,6 +399,12 @@ class PDFGeneratorWithLogo {
             
             // Generar archivo
             const fileName = this.generateFileName(data);
+            
+            // NUEVO: Guardar PDF blob para envío por email
+            const pdfBlob = pdf.output('blob');
+            window.lastGeneratedPDF = pdfBlob;
+            console.log('💾 PDF blob guardado para email automático');
+            
             pdf.save(fileName);
             
             console.log('✅ PDF PROFESIONAL AVANZADO generado exitosamente:', fileName);
@@ -581,6 +592,12 @@ class PDFGeneratorWithLogo {
             
             // Generar archivo
             const fileName = this.generateFileName(data);
+            
+            // NUEVO: Guardar PDF blob para envío por email
+            const pdfBlob = pdf.output('blob');
+            window.lastGeneratedPDF = pdfBlob;
+            console.log('💾 PDF blob guardado para email automático');
+            
             pdf.save(fileName);
             
             console.log('✅ PDF básico con logo generado:', fileName);
