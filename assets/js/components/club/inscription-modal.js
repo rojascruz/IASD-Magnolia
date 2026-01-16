@@ -3,7 +3,7 @@
 
 class InscriptionModal {
     constructor() {
-        this.email = 'jrojasj73@gmail.com';
+        this.email = null; // Email dinámico - se obtiene del formulario
         this.modal = null;
         this.childrenCount = 1;
         this.templates = new Map();
@@ -17,14 +17,14 @@ class InscriptionModal {
     }
 
     async init() {
-        console.log('📝 Inicializando Inscription Modal con PDF profesional...');
+        
         await this.loadTemplates();
         this.createModal();
         this.attachEventListeners();
         
 
         
-        console.log('✅ Inscription Modal inicializado correctamente');
+        
     }
 
     async loadTemplates() {
@@ -43,13 +43,13 @@ class InscriptionModal {
                     this.templates.set(template.id, template.innerHTML);
                 });
                 
-                console.log('📄 Templates del modal cargados correctamente');
+                
             } else {
-                console.warn('⚠️ No se pudo cargar el template del modal, usando fallback');
+                
                 this.useFallbackTemplates();
             }
         } catch (error) {
-            console.error('❌ Error cargando templates del modal:', error);
+            
             this.useFallbackTemplates();
         }
     }
@@ -126,7 +126,7 @@ class InscriptionModal {
             </div>
         `);
 
-        console.log('📄 Templates fallback cargados');
+        
     }
 
     replaceTemplate(template, replacements) {
@@ -228,7 +228,7 @@ class InscriptionModal {
         this.modal.className = 'inscription-modal';
         
         if (!this.templates.has('inscription-modal-template')) {
-            console.error('❌ Template principal del modal no encontrado');
+            
             return;
         }
 
@@ -304,19 +304,19 @@ class InscriptionModal {
             // Botón para abrir modal
             const openBtn = document.getElementById('open-inscription');
             if (openBtn) {
-                console.log('🔗 Conectando botón de inscripción...');
+                
                 openBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    console.log('🚀 Abriendo modal de inscripción');
+                    
                     this.openModal();
                 });
-                console.log('✅ Botón de inscripción conectado correctamente');
+                
             } else {
-                console.error('❌ No se encontró el botón #open-inscription');
+                
                 
                 const inscriptionBtns = document.querySelectorAll('.inscription-btn');
                 if (inscriptionBtns.length > 0) {
-                    console.log('🔄 Intentando conectar botones con clase .inscription-btn');
+                    
                     inscriptionBtns.forEach(btn => {
                         btn.addEventListener('click', (e) => {
                             e.preventDefault();
@@ -324,7 +324,7 @@ class InscriptionModal {
                             this.openModal();
                         });
                     });
-                    console.log('✅ Botones de inscripción conectados por clase');
+                    
                 }
             }
 
@@ -394,7 +394,7 @@ class InscriptionModal {
         // Reconfigurar calculadora inmediatamente para el nuevo hijo
         this.reconfigureAgeCalculator();
         
-        console.log(`➕ Hijo #${this.childrenCount} agregado y configurado`);
+        
     }
 
     removeChild(childNumber) {
@@ -404,7 +404,7 @@ class InscriptionModal {
             setTimeout(() => {
                 childForm.remove();
                 this.renumberChildren(); // Renumerar después de eliminar
-                console.log(`➖ Hijo #${childNumber} removido y renumerado`);
+                
             }, 300);
         }
     }
@@ -446,7 +446,7 @@ class InscriptionModal {
         this.setupValidationForAllChildren();
         this.reconfigureAgeCalculator();
         
-        console.log(`🔄 Hijos renumerados: ${this.childrenCount} hijos total`);
+        
     }
 
     // NUEVA FUNCIÓN: Actualizar nombres de campos
@@ -466,7 +466,7 @@ class InscriptionModal {
 
     // NUEVA FUNCIÓN: Reconfigurar calculadora de edad después de cambios
     reconfigureAgeCalculator() {
-        console.log('🔄 Reconfigurando calculadora de edad...');
+        
         
         // Disparar evento para que la calculadora se reconfigure
         const event = new CustomEvent('childrenChanged');
@@ -474,13 +474,13 @@ class InscriptionModal {
         
         // También ejecutar directamente si la función está disponible
         if (window.configurarCalculadoraEdad) {
-            console.log('✅ Función configurarCalculadoraEdad encontrada, ejecutando...');
+            
             setTimeout(() => {
                 window.configurarCalculadoraEdad();
-                console.log('🎯 Calculadora reconfigurada');
+                
             }, 100);
         } else {
-            console.warn('⚠️ window.configurarCalculadoraEdad no está disponible');
+            
         }
     }
 
@@ -492,9 +492,9 @@ class InscriptionModal {
             // Aplicar traducciones si el language manager está disponible
 
             
-            console.log('📋 Modal de inscripción abierto');
+            
         } else {
-            console.error('❌ Modal no encontrado');
+            
         }
     }
 
@@ -504,7 +504,7 @@ class InscriptionModal {
         if (this.modal) {
             this.modal.classList.remove('active');
             document.body.style.overflow = '';
-            console.log('❌ Modal de inscripción cerrado');
+            
         }
     }
 
@@ -557,7 +557,10 @@ class InscriptionModal {
             children: children
         };
 
-        console.log('📨 Enviando datos de inscripción:', data);
+        // 🎯 ASIGNAR EMAIL DINÁMICO del formulario
+        this.email = parentData.email; // Email dinámico del formulario
+        
+        
         
         // NUEVO: Generar PDF automáticamente Y enviar email
         this.processInscription(data);
@@ -567,9 +570,9 @@ class InscriptionModal {
     async processInscription(data) {
         try {
             // Verificar disponibilidad del nuevo generador
-            console.log('🔍 Verificando generadores de PDF disponibles:');
-            console.log('- window.generatePDFWithLogo:', !!window.generatePDFWithLogo);
-            console.log('- window.pdfGeneratorWithLogo:', !!window.pdfGeneratorWithLogo);
+            
+            
+            
             
             // Mostrar notificación de procesamiento
             if (window.notifications) {
@@ -587,7 +590,7 @@ class InscriptionModal {
             this.sendEmailWithPDFInfo(data, pdfGenerated);
             
         } catch (error) {
-            console.error('❌ Error procesando inscripción:', error);
+            
             // Si falla todo, enviar solo email
             this.sendEmailWithPDFInfo(data, false);
         }
@@ -596,37 +599,37 @@ class InscriptionModal {
     // MÉTODO ACTUALIZADO: Usa el nuevo generador de PDF profesional
     async tryGeneratePDF(data) {
         try {
-            console.log('🎯 Usando nuevo generador de PDF profesional...');
+            
             
             // PRIORIDAD 1: Usar el nuevo generador profesional con logo
             if (window.generatePDFWithLogo) {
-                console.log('✅ Generador profesional disponible, generando PDF...');
+                
                 const success = await window.generatePDFWithLogo(data);
                 if (success) {
-                    console.log('🎨 ¡PDF profesional generado exitosamente!');
+                    
                     return true;
                 } else {
-                    console.warn('⚠️ El generador profesional falló');
+                    
                 }
             } else {
-                console.warn('⚠️ Generador profesional no disponible');
+                
             }
             
             // PRIORIDAD 2: Acceso directo al generador profesional
             if (window.pdfGeneratorWithLogo) {
-                console.log('🔄 Intentando acceso directo al generador profesional...');
+                
                 const success = await window.pdfGeneratorWithLogo.generateAdvancedBasicPDF(data);
                 if (success) {
-                    console.log('🎨 ¡PDF profesional generado por acceso directo!');
+                    
                     return true;
                 }
             }
             
-            console.error('❌ Nuevo generador de PDF no disponible - no se generará PDF básico');
+            
             return false;
             
         } catch (error) {
-            console.error('❌ Error usando nuevo generador de PDF:', error);
+            
             return false;
         }
     }
@@ -655,7 +658,7 @@ class InscriptionModal {
                 // NUEVO: Detectar si el usuario eligió una app de email
                 try {
                     await navigator.share(shareData);
-                    console.log('📱 PDF compartido exitosamente');
+                    
                     
                     // DESPUÉS del share, mostrar instrucciones adicionales para email
                     setTimeout(() => {
@@ -669,7 +672,7 @@ class InscriptionModal {
                     }, 1000);
                     
                 } catch (shareError) {
-                    console.warn('⚠️ Error compartiendo:', shareError);
+                    
                     // Fallback: descarga tradicional con instrucciones
                     doc.save(fileName);
                     this.showEmailInstructions(data);
@@ -680,7 +683,7 @@ class InscriptionModal {
                 this.showEmailInstructions(data);
             }
         } catch (error) {
-            console.warn('⚠️ Error en handleMobilePDF:', error);
+            
             doc.save(fileName);
             this.showEmailInstructions(data);
         }
@@ -762,127 +765,170 @@ class InscriptionModal {
     }
 
     // MÉTODO PROFESIONAL: Envía email con mensaje corto y profesional
-    sendEmailWithPDFInfo(data, pdfGenerated) {
-        console.log('📧 Preparando email profesional...');
+    // MÉTODO SIMPLIFICADO: Enviar email directo con EmailJS automático
+    async sendEmailWithPDFInfo(data, pdfGenerated) {
         
-        // Crear mensaje profesional y conciso
-        const subject = 'Inscripción Club Juvenil - IASD Magnolia';
         
-        // Determinar nombres de los hijos para el mensaje
+        try {
+            // DIAGNÓSTICO: Verificar estado del servicio
+            
+            
+            
+            if (window.emailService) {
+                const status = window.emailService.getStatus();
+                
+                
+                // Verificar que el servicio esté inicializado
+                if (!status.ready) {
+                    
+                    await window.emailService.initEmailJS();
+                    
+                    // Verificar de nuevo
+                    const newStatus = window.emailService.getStatus();
+                    
+                    
+                    if (!newStatus.ready) {
+                        
+                        return this.sendEmailDirect(data, pdfGenerated);
+                    }
+                }
+            } else {
+                
+                return this.sendEmailDirect(data, pdfGenerated);
+            }
+
+            // Obtener PDF blob si está disponible
+            const pdfBlob = window.lastGeneratedPDF || null;
+            
+            
+            
+            
+            
+            // ENVÍO AUTOMÁTICO CON EMAILJS
+            const result = await window.emailService.sendInscriptionEmail(
+                data, 
+                pdfBlob, 
+                this.email
+            );
+
+            if (result.success) {
+                // ✅ ÉXITO - EMAIL ENVIADO AUTOMÁTICAMENTE
+                
+                
+                const childrenText = data.children.length === 1 ? '1 hijo/hija' : `${data.children.length} hijos/hijas`;
+                
+                if (window.notifications) {
+                    window.notifications.success(
+                        '📧 Email Enviado Automáticamente',
+                        `¡Perfecto! Se envió el email automáticamente a ${this.email} con el PDF adjunto para ${childrenText}.`,
+                        {
+                            duration: 8000,
+                            actions: [
+                                {
+                                    label: '✅ Entendido',
+                                    action: () => console.log('Usuario confirmó envío automático')
+                                }
+                            ]
+                        }
+                    );
+                } else {
+                    alert(`¡Email Enviado Automáticamente!\n\nEl email fue enviado exitosamente a ${this.email}.`);
+                }
+                
+                this.closeModal();
+                this.resetForm();
+                
+            } else {
+                // ❌ ERROR - Usar método de respaldo
+                
+                
+                if (window.notifications) {
+                    window.notifications.warning(
+                        'Usando Método Alternativo',
+                        'El envío automático no estuvo disponible. Se abrirá su cliente de email.',
+                        { duration: 5000 }
+                    );
+                }
+                
+                // Usar método de respaldo
+                window.emailService.fallbackToMailto(data, this.email);
+                this.closeModal();
+                this.resetForm();
+            }
+            
+        } catch (error) {
+            
+            
+            // Usar método de respaldo en caso de error
+            
+            this.sendEmailDirect(data, pdfGenerated);
+        }
+    }
+
+    // MÉTODO DIRECTO: Email con mailto (sin dependencias externas)
+    sendEmailDirect(data, pdfGenerated) {
+        
+        
+        // Crear el mensaje personalizado exacto que solicitaste
         const childrenNames = data.children.map(child => child.name).join(', ');
         const childCount = data.children.length;
         const childText = childCount === 1 ? 'hijo/hija' : 'hijos/hijas';
         
-        // MENSAJE PROFESIONAL CORTO
+        // MENSAJE EXACTO SOLICITADO
+        const subject = 'Inscripción Club Juvenil - IASD Magnolia';
         const body = `Estimados hermanos,
 
-Saludos cordiales. Envío el PDF con la inscripción de su ${childText} ${childrenNames} para el club juvenil.
+        Envío el PDF con la inscripción de su ${childText} ${childrenNames} para el club juvenil.
 
 El PDF contiene toda la información detallada de la inscripción. Por favor, revisen la información y nos pondremos en contacto pronto para confirmar la participación.
 
 Que Dios les bendiga,
 
 Iglesia Adventista del Séptimo Día Magnolia
-Bayamón, Puerto Rico
+Bayamón, Puerto Rico`;
 
----
-Enviado desde: www.iasdmagnolia.org
-Fecha: ${new Date().toLocaleString('es-ES', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        })}`;
-        
         try {
+            // Crear mailto link
             const mailtoLink = `mailto:${this.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             
             // Log para debugging
-            console.log('📧 Email destinatario:', this.email);
-            console.log('📋 Asunto:', subject);
-            console.log('📝 Mensaje profesional preparado');
-            console.log('📄 PDF generado:', pdfGenerated ? 'SÍ ✅' : 'NO ⚠️');
             
-            // Intentar abrir el cliente de email
+            
+            
+            
+            
+            // Abrir cliente de email
             window.location.href = mailtoLink;
             
-            // Mensaje de instrucciones profesional
-            let message = '';
-            if (pdfGenerated) {
-                message = `¡Excelente! Se ha generado el PDF profesional y preparado el email.
+            // Notificación de éxito
+            const successMessage = pdfGenerated 
+                ? `¡Excelente! Se ha generado el PDF profesional y preparado el email.
 
 PRÓXIMOS PASOS:
 1. ✅ El PDF se descargó automáticamente
 2. 📧 Se abrió su cliente de correo con el mensaje
 3. 📎 Adjunte manualmente el PDF descargado
-4. ✉️ Envíe el correo
-
-El mensaje ya está preparado profesionalmente para enviar.`;
-            } else {
-                message = `Email preparado para ${childCount} ${childText}. 
+4. ✉️ Envíe el correo`
+                : `Email preparado para ${childCount} ${childText}. 
 
 ⚠️ Nota: El PDF no se pudo generar automáticamente. 
 Por favor incluya la información en el correo o intente nuevamente.`;
-            }
             
             if (window.notifications) {
                 window.notifications.success(
-                    'Email Profesional Preparado',
-                    message,
-                    {
-                        duration: 12000
-                    }
+                    'Email Preparado',
+                    successMessage,
+                    { duration: 10000 }
                 );
             } else {
-                alert(`Email Profesional Preparado\n\n${message}`);
+                alert(`Email Preparado\n\n${successMessage}`);
             }
             
-            this.closeModal();
-            this.resetForm();
             
-            console.log('✅ Proceso completado - PDF:', pdfGenerated ? 'Generado ✅' : 'No disponible ⚠️', '+ Email profesional preparado para:', this.email);
-
-            // Mostrar notificación de éxito
-            const childrenText = data.children.length === 1 ? '1 hijo' : `${data.children.length} hijos`;
             
-            let message2 = '';
-            if (pdfGenerated) {
-                message2 = `Perfecto! Se generó y descargó el PDF profesional, y se preparó el email para ${childrenText}. Revise su cliente de correo para enviar la solicitud.`;
-            } else {
-                message2 = `Email preparado para ${childrenText}. Se ha abierto su cliente de correo para enviar la solicitud. (PDF no disponible en este momento)`;
-            }
-            
-            if (window.notifications) {
-                window.notifications.success(
-                    'Inscripción Procesada!',
-                    message2,
-                    {
-                        duration: 8000
-                    }
-                );
-            } else {
-                alert(`Inscripción Procesada!\n\n${message2}`);
-            }
-            
-            this.closeModal();
-            this.resetForm();
-            
-            console.log('✅ Proceso completado - PDF:', pdfGenerated ? 'Generado ✅' : 'No disponible ⚠️', '+ Email preparado para:', this.email);
         } catch (error) {
-            console.error('❌ Error al preparar el email:', error);
             
-            if (window.notifications) {
-                window.notifications.error(
-                    'Error al Preparar Email',
-                    `No se pudo abrir el cliente de correo automáticamente. Por favor, envíe un email manualmente a: ${this.email}`,
-                    {
-                        duration: 10000
-                    }
-                );
-            } else {
-                alert(`Error al preparar el email.\n\nEnvíe manualmente a: ${this.email}\nAsunto: ${subject}\nY adjunte el PDF descargado.`);
-            }
+            alert('Error preparando el email. Por favor intente nuevamente.');
         }
     }
 
@@ -1046,7 +1092,7 @@ Por favor incluya la información en el correo o intente nuevamente.`;
             this.addValidationToNewChild(childForm);
         });
         
-        console.log(`✅ Validaciones configuradas para ${childForms.length} hijos`);
+        
     }
 
     resetForm() {
@@ -1072,11 +1118,11 @@ Por favor incluya la información en el correo o intente nuevamente.`;
                 field.style.borderColor = '#e9ecef';
             });
             
-            console.log('🔄 Formulario reiniciado y renumerado');
+            
         }
     }
 }
 
 // Inicializar
-console.log('🔄 Cargando Inscription Modal con auto-completado de email...');
+
 window.inscriptionModal = new InscriptionModal();

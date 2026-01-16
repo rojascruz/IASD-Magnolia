@@ -34,11 +34,11 @@ async function loadFooter() {
                     document.head.appendChild(newScript);
                 });
                 
-                console.log('✅ Footer cargado exitosamente desde index.html');
+                
             }
         }
     } catch (error) {
-        console.error('❌ Error cargando footer:', error);
+        
         // Mostrar footer de respaldo si falla
         showFallbackFooter();
     }

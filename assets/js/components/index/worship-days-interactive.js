@@ -400,20 +400,20 @@ class WorshipDaysInteractive {
         // Esperar a que el DOM esté completamente cargado
         document.addEventListener('DOMContentLoaded', () => {
             const worshipCards = document.querySelectorAll('.worship-card');
-            console.log(`🔍 Encontradas ${worshipCards.length} tarjetas de culto`);
+            
             
             worshipCards.forEach((card, index) => {
                 // Obtener el día desde el elemento .day dentro de la tarjeta
                 const dayElement = card.querySelector('.day');
                 if (dayElement) {
                     const day = dayElement.textContent.trim();
-                    console.log(`📅 Tarjeta ${index + 1}: Día detectado = "${day}"`);
+                    
                     
                     // Verificar si existe configuración para este día
                     if (this.dayGifs[day]) {
-                        console.log(`✅ Configuración encontrada para "${day}": ${this.dayGifs[day].gif}`);
+                        
                     } else {
-                        console.warn(`❌ No hay configuración para "${day}"`);
+                        
                         console.log('Días disponibles:', Object.keys(this.dayGifs));
                     }
                     
@@ -434,7 +434,7 @@ class WorshipDaysInteractive {
                     
                     // Click event
                     card.addEventListener('click', () => {
-                        console.log(`🖱️ Click en tarjeta: "${day}"`);
+                        
                         this.showDayGif(day);
                     });
                 }
@@ -488,9 +488,9 @@ class WorshipDaysInteractive {
             this.openModal();
             
             // Log para debugging
-            console.log(`📅 Mostrando GIF para ${day}: ${dayData.gif}`);
+            
         } else {
-            console.warn(`⚠️ No se encontró configuración para el día: ${day}`);
+            
         }
     }
 
@@ -514,7 +514,7 @@ class WorshipDaysInteractive {
                 title: title || this.dayGifs[day].title,
                 description: description || this.dayGifs[day].description
             };
-            console.log(`✅ GIF actualizado para ${day}: ${gifPath}`);
+            
         }
     }
 }

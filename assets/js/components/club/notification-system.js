@@ -13,7 +13,7 @@ class NotificationSystem {
     async init() {
         this.createContainer();
         await this.loadTemplate();
-        console.log('🔔 Sistema de notificaciones inicializado');
+        
     }
 
     createContainer() {
@@ -38,13 +38,13 @@ class NotificationSystem {
                     this.templates.set(template.id, template.innerHTML);
                 });
                 
-                console.log('📄 Template cargado correctamente');
+                
             } else {
-                console.warn('⚠️ No se pudo cargar el template, usando fallback');
+                
                 this.useFallbackTemplates();
             }
         } catch (error) {
-            console.error('❌ Error cargando template:', error);
+            
             this.useFallbackTemplates();
         }
     }
@@ -111,7 +111,7 @@ class NotificationSystem {
         } = options;
 
         if (!this.templates.has('notification-template')) {
-            console.error('❌ Template principal no cargado');
+            
             return null;
         }
 
@@ -189,7 +189,7 @@ class NotificationSystem {
             }
         }
 
-        console.log(`🔔 Notificación ${type} mostrada:`, title || message);
+        
         return notificationId;
     }
 
@@ -294,5 +294,5 @@ class NotificationSystem {
         return window.notifications[type](title, message, options);
     };
 
-    console.log('🔔 Sistema de notificaciones cargado correctamente');
+    
 })();

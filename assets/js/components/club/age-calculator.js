@@ -1,7 +1,7 @@
 // CALCULADORA DE EDAD AUTOMÁTICA - Versión Simple y Directa
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🧮 Iniciando calculadora automática de edad...');
+    
     
     // FUNCIÓN PRINCIPAL: Calcular edad exacta desde fecha de nacimiento
     function calcularEdadExacta(fechaNacimiento) {
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Pequeño delay para asegurar que el valor se actualice en móviles
         setTimeout(() => {
             if (!campoFecha.value) {
-                console.log('❌ No hay fecha seleccionada');
+                
                 return;
             }
 
@@ -64,19 +64,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            console.log(`📅 Procesando fecha para hijo ${numeroHijo}: ${campoFecha.value}`);
-            console.log(`🔍 Campo edad encontrado:`, !!campoEdad, campoEdad?.name);
-            console.log(`🔍 Campo club encontrado:`, !!campoClub, campoClub?.name);
+            
+            
+            
             
             // CALCULAR EDAD con validación adicional
             const fechaValue = campoFecha.value;
             if (!fechaValue || fechaValue === '') {
-                console.log('❌ Valor de fecha inválido');
+                
                 return;
             }
             
             const edad = calcularEdadExacta(fechaValue);
-            console.log(`🧮 Edad calculada: ${edad} años para fecha: ${fechaValue}`);
+            
             
             // VALIDAR EDAD
             if (isNaN(edad) || edad < 0) {
@@ -114,9 +114,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     campoEdad.style.transform = 'scale(1)';
                 }, 200);
                 
-                console.log(`✅ Edad ${edad} insertada en el campo ${campoEdad.name}`);
+                
             } else {
-                console.error(`❌ No se encontró campo de edad para hijo ${numeroHijo}`);
+                
             }
             
             // SUGERIR CLUB AUTOMÁTICAMENTE con validación mejorada
@@ -132,10 +132,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     const event = new Event('change', { bubbles: true });
                     campoClub.dispatchEvent(event);
                     
-                    console.log(`🎯 Club ${clubSugerido} sugerido para ${campoClub.name}`);
+                    
                 }
             } else if (!campoClub) {
-                console.error(`❌ No se encontró campo de club para hijo ${numeroHijo}`);
+                
             }
             
             // Notificación visual en móviles
@@ -172,10 +172,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Buscar todos los campos de fecha de nacimiento
         const camposFecha = document.querySelectorAll('input[name*="childBirthdate_"]');
         
-        console.log(`🔍 Buscando campos de fecha... Encontrados: ${camposFecha.length}`);
+        
         
         camposFecha.forEach(function(campo) {
-            console.log(`📅 Configurando: ${campo.name}`);
+            
             
             // Remover listener anterior si existe
             if (campo._calculadoraEdad) {
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Crear nueva función para este campo
             campo._calculadoraEdad = function() {
-                console.log(`🎯 Evento disparado en: ${this.name}`);
+                
                 procesarFechaNacimiento(this);
             };
             
@@ -206,15 +206,15 @@ document.addEventListener('DOMContentLoaded', function() {
             // Marcar como configurado
             campo.setAttribute('data-configured', 'true');
             
-            console.log(`✅ Calculadora configurada para: ${campo.name}`);
+            
         });
         
-        console.log(`✅ Configurados ${camposFecha.length} campos de fecha de nacimiento`);
+        
         
         // También verificar campos existentes
         const camposEdad = document.querySelectorAll('input[name*="childAge_"]');
         const camposClub = document.querySelectorAll('select[name*="selectedClub_"]');
-        console.log(`📊 Campos encontrados - Fecha: ${camposFecha.length}, Edad: ${camposEdad.length}, Club: ${camposClub.length}`);
+        
     }
 
     // EXPONER FUNCIÓN GLOBALMENTE para que inscription-modal.js pueda usarla
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // NUEVO: Escuchar cambios en los hijos para reconfigurar
         document.addEventListener('childrenChanged', function() {
-            console.log('🔄 Detectados cambios en hijos, reconfigurando calculadora...');
+            
             setTimeout(configurarCalculadoraEdad, 300);
         });
         
@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             if (shouldReconfig) {
-                console.log('🔄 Detectados nuevos campos de fecha, reconfigurando...');
+                
                 setTimeout(configurarCalculadoraEdad, 100);
             }
         });
@@ -273,12 +273,12 @@ document.addEventListener('DOMContentLoaded', function() {
         setInterval(function() {
             const camposSinListener = document.querySelectorAll('input[name*="childBirthdate_"]:not([data-configured])');
             if (camposSinListener.length > 0) {
-                console.log(`🔄 Encontrados ${camposSinListener.length} campos sin configurar, reconfigurando...`);
+                
                 configurarCalculadoraEdad();
             }
         }, 2000);
         
     }, 1000);
     
-    console.log('🎯 Calculadora automática de edad lista para usar');
+    
 });
