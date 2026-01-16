@@ -243,10 +243,7 @@ Fecha: ${new Date().toLocaleString('es-ES', {
                     // Mensaje de instrucciones profesional
                     let message = '';
                     if (pdfGeneratedSuccessfully) {
-                        message = `¡PERFECTO! PDF generado y email preparado.
-
-
-El mensaje profesional ya está listo.`;
+                        message = `¡PERFECTO! PDF generado y email preparado.`;
                     } else {
                         message = `⚠️ ATENCIÓN: Email preparado pero PDF no se generó.
 
