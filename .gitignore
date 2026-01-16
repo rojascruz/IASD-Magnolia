@@ -1,0 +1,48 @@
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Archivos de editor
+.vscode/
+.idea/
+*.sublime-*
+*~
+
+# Logs y archivos temporales
+*.log
+*.tmp
+*.temp
+
+# Carpetas de node (si usas Node.js en el futuro)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de entorno (variables sensibles)
+.env
+.env.local
+.env.production
+
+# Archivos de backup
+*.backup
+*.bak
+*.orig
+
+# Archivos de caché
+*.cache
+.cache/
+
+# Archivos de distribución o build
+dist/
+build/
+*.min.js
+*.min.css
+
+# Archivos específicos del proyecto
+*.pdf
+*.zip
+test/
+demo/
