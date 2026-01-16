@@ -18,8 +18,6 @@ class PDFGeneratorWithLogo {
             
             return new Promise((resolve, reject) => {
                 img.onload = () => {
-                    console.log('🖼️ Logo cargado exitosamente');
-                    
                     // Convertir a base64
                     const canvas = document.createElement('canvas');
                     canvas.width = img.width;
@@ -33,14 +31,12 @@ class PDFGeneratorWithLogo {
                 };
                 
                 img.onerror = () => {
-                    console.warn('⚠️ No se pudo cargar el logo desde:', this.logoPath);
                     resolve(false);
                 };
                 
                 img.src = this.logoPath;
             });
         } catch (error) {
-            console.error('❌ Error cargando logo:', error);
             return false;
         }
     }
@@ -48,28 +44,16 @@ class PDFGeneratorWithLogo {
     // Método principal: Genera PDF usando HTML template
     async generatePDFFromHTML(data) {
         try {
-            console.log('🏗️ Generando PDF desde HTML template (formato imagen completa)...');
-            console.log('🔍 Verificando disponibilidad de html2canvas...');
-            console.log('typeof html2canvas:', typeof html2canvas);
-            console.log('window.html2canvas:', window.html2canvas);
-            
             // Verificar html2canvas ANTES de continuar
             if (typeof html2canvas === 'undefined' && !window.html2canvas) {
-                console.error('❌ html2canvas NO DISPONIBLE - El PDF será básico');
-                console.error('🔧 Solución: Cargar html2canvas correctamente');
-                
-                // En lugar de fallar, voy a crear un PDF más profesional sin html2canvas
                 return this.generateAdvancedBasicPDF(data);
             }
-            
-            console.log('✅ html2canvas disponible, procediendo con renderizado...');
             
             // Usar la función html2canvas correcta
             const html2canvasFunc = typeof html2canvas !== 'undefined' ? html2canvas : window.html2canvas;
             
             // Crear template HTML en memoria
             const htmlTemplate = this.createHTMLTemplate(data);
-            console.log('📝 Template HTML creado');
             
             // Crear div temporal para renderizar
             const tempDiv = document.createElement('div');
@@ -79,36 +63,28 @@ class PDFGeneratorWithLogo {
             tempDiv.style.top = '-9999px';
             tempDiv.style.width = '210mm'; // Ancho A4
             tempDiv.style.backgroundColor = 'white';
-            tempDiv.style.padding = '20mm';
+            tempDiv.style.padding = '5mm'; // REDUCIDO de 20mm a 5mm para eliminar espacio extra
             tempDiv.style.boxSizing = 'border-box';
             tempDiv.style.fontFamily = 'Arial, sans-serif';
             
             document.body.appendChild(tempDiv);
-            console.log('🔧 Elemento temporal agregado al DOM');
             
             // Esperar a que se renderice completamente
             await new Promise(resolve => setTimeout(resolve, 1500));
-            console.log('⏰ Esperando renderizado completado');
-            
-            console.log('📸 Iniciando captura con html2canvas...');
             
             // Capturar HTML como imagen con configuración optimizada
             const canvas = await html2canvasFunc(tempDiv, {
-                scale: 2, // Alta calidad
+                scale: 2,
                 backgroundColor: '#ffffff',
-                logging: true, // Habilitar logs para debugging
+                logging: false,
                 useCORS: true,
                 allowTaint: true,
                 width: tempDiv.offsetWidth,
                 height: tempDiv.offsetHeight
             });
             
-            console.log('✅ Canvas creado exitosamente:', canvas.width + 'x' + canvas.height);
-            
             // Limpiar DOM
             document.body.removeChild(tempDiv);
-            
-            console.log('🖼️ Imagen capturada exitosamente, creando PDF...');
             
             // Crear PDF
             const imgData = canvas.toDataURL('image/png');
@@ -148,21 +124,13 @@ class PDFGeneratorWithLogo {
             // NUEVO: Guardar PDF blob para envío por email
             const pdfBlob = pdf.output('blob');
             window.lastGeneratedPDF = pdfBlob;
-            console.log('💾 PDF blob guardado para email automático');
             
             // Descargar
             pdf.save(fileName);
             
-            console.log('✅ ¡PDF FORMATO IMAGEN GENERADO EXITOSAMENTE!:', fileName);
             return true;
             
         } catch (error) {
-            console.error('❌ Error generando PDF desde HTML:', error);
-            console.error('Detalles del error:', error.message);
-            console.error('Stack trace:', error.stack);
-            
-            // Fallback a PDF profesional sin html2canvas
-            console.log('🔄 Intentando método profesional alternativo...');
             return this.generateAdvancedBasicPDF(data);
         }
     }
@@ -170,8 +138,6 @@ class PDFGeneratorWithLogo {
     // Método alternativo: PDF profesional sin html2canvas
     async generateAdvancedBasicPDF(data) {
         try {
-            console.log('🎨 Generando PDF profesional avanzado (sin html2canvas)...');
-            
             let pdf;
             if (window.jspdf && window.jspdf.jsPDF) {
                 pdf = new window.jspdf.jsPDF();
@@ -187,13 +153,11 @@ class PDFGeneratorWithLogo {
             // HEADER PROFESIONAL CON LOGO
             if (this.logoLoaded && this.logoBase64) {
                 try {
-                    // Logo en esquina superior derecha con aspect ratio correcto
                     const logoMaxWidth = 30;
                     const logoMaxHeight = 25;
                     pdf.addImage(this.logoBase64, 'PNG', pageWidth - logoMaxWidth - 15, 15, logoMaxWidth, logoMaxHeight);
-                    console.log('🖼️ Logo profesional agregado');
                 } catch (logoError) {
-                    console.warn('⚠️ Error agregando logo:', logoError);
+                    // Error silencioso
                 }
             }
             
@@ -304,7 +268,7 @@ class PDFGeneratorWithLogo {
                         try {
                             pdf.addImage(this.logoBase64, 'PNG', pageWidth - 30 - 15, 15, 30, 25);
                         } catch (error) {
-                            console.warn('Error agregando logo en nueva página');
+                            
                         }
                     }
                 }
@@ -403,15 +367,15 @@ class PDFGeneratorWithLogo {
             // NUEVO: Guardar PDF blob para envío por email
             const pdfBlob = pdf.output('blob');
             window.lastGeneratedPDF = pdfBlob;
-            console.log('💾 PDF blob guardado para email automático');
+            
             
             pdf.save(fileName);
             
-            console.log('✅ PDF PROFESIONAL AVANZADO generado exitosamente:', fileName);
+            
             return true;
             
         } catch (error) {
-            console.error('❌ Error generando PDF profesional:', error);
+            
             return false;
         }
     }
@@ -419,7 +383,7 @@ class PDFGeneratorWithLogo {
     // Método básico con logo (mantener como respaldo)
     async generateBasicPDFWithLogo(data) {
         try {
-            console.log('📄 Generando PDF básico con logo...');
+            
             
             let pdf;
             if (window.jspdf && window.jspdf.jsPDF) {
@@ -464,7 +428,7 @@ class PDFGeneratorWithLogo {
                         const logoY = 10;
                         
                         pdf.addImage(this.logoBase64, 'PNG', logoX, logoY, logoWidth, logoHeight);
-                        console.log('🖼️ Logo agregado al PDF con dimensiones:', logoWidth, 'x', logoHeight);
+                        
                     };
                     
                     // Para compatibilidad, también agregar directamente (fallback)
@@ -472,7 +436,7 @@ class PDFGeneratorWithLogo {
                     pdf.addImage(this.logoBase64, 'PNG', pageWidth - maxSize - 10, 10, maxSize, maxSize);
                     console.log('🖼️ Logo agregado al PDF (método fallback)');
                 } catch (logoError) {
-                    console.warn('⚠️ Error agregando logo al PDF:', logoError);
+                    
                 }
             }
             
@@ -543,7 +507,7 @@ class PDFGeneratorWithLogo {
                             
                             pdf.addImage(this.logoBase64, 'PNG', logoX, logoY, logoWidth, logoHeight);
                         } catch (logoError) {
-                            console.warn('⚠️ Error agregando logo en nueva página:', logoError);
+                            
                         }
                     }
                 }
@@ -596,15 +560,15 @@ class PDFGeneratorWithLogo {
             // NUEVO: Guardar PDF blob para envío por email
             const pdfBlob = pdf.output('blob');
             window.lastGeneratedPDF = pdfBlob;
-            console.log('💾 PDF blob guardado para email automático');
+            
             
             pdf.save(fileName);
             
-            console.log('✅ PDF básico con logo generado:', fileName);
+            
             return true;
             
         } catch (error) {
-            console.error('❌ Error generando PDF básico:', error);
+            
             return false;
         }
     }
@@ -667,77 +631,30 @@ class PDFGeneratorWithLogo {
         
         return `Inscripcion_Club_${childrenNames}_${dateStr}_${timeStr}.pdf`;
     }
-
-    // Método para debugging - probar generación
-    async testGeneration() {
-        const testData = {
-            parent: {
-                name: "María González",
-                phone: "787-123-4567",
-                email: "maria@example.com",
-                address: "123 Calle Principal, Bayamón, PR"
-            },
-            children: [
-                {
-                    name: "Juan González",
-                    age: 12,
-                    birthdate: "2012-03-15",
-                    club: "Conquistadores",
-                    allergies: "Alergia a los maníes"
-                }
-            ]
-        };
-
-        console.log('🧪 Iniciando test de generación de PDF...');
-        
-        // Probar método HTML primero
-        const htmlResult = await this.generatePDFFromHTML(testData);
-        
-        if (!htmlResult) {
-            console.log('🔄 Probando método básico...');
-            const basicResult = await this.generateBasicPDFWithLogo(testData);
-            return basicResult;
-        }
-        
-        return htmlResult;
-    }
 }
 
 // Inicializar el generador cuando se carga el documento
 document.addEventListener('DOMContentLoaded', function() {
     window.pdfGeneratorWithLogo = new PDFGeneratorWithLogo();
-    console.log('✅ PDF Generator con Logo inicializado');
+    
 });
 
 // Función para usar desde el modal de inscripción - SIEMPRE profesional
 window.generatePDFWithLogo = async function(data) {
     if (!window.pdfGeneratorWithLogo) {
-        console.error('❌ PDF Generator no inicializado');
+        
         return false;
     }
     
     // PRIORIDAD 1: Intentar método HTML→Imagen
-    console.log('🎯 Intentando método HTML→Imagen primero...');
+    
     const htmlResult = await window.pdfGeneratorWithLogo.generatePDFFromHTML(data);
     
     if (htmlResult) {
-        console.log('✅ Éxito con método HTML→Imagen');
         return true;
     }
     
-    // PRIORIDAD 2: Método profesional sin html2canvas (GARANTIZADO)
-    console.log('🎨 Usando método profesional garantizado...');
     const professionalResult = await window.pdfGeneratorWithLogo.generateAdvancedBasicPDF(data);
     
     return professionalResult;
-};
-
-// Función de test para debugging
-window.testPDFWithLogo = async function() {
-    if (!window.pdfGeneratorWithLogo) {
-        console.error('❌ PDF Generator no inicializado');
-        return false;
-    }
-    
-    return await window.pdfGeneratorWithLogo.testGeneration();
 };

@@ -24,19 +24,19 @@ class HeaderLoader {
 
     async loadHeader() {
         try {
-            console.log('📄 Cargando header dinámicamente...');
+            
             
             // Buscar el contenedor del header
             const headerContainer = document.getElementById('header-container');
             if (!headerContainer) {
-                console.warn('⚠️ No se encontró #header-container, insertando header directamente');
+                
                 await this.loadAndInsertHeader();
                 return;
             }
 
             // Si ya existe un header, no lo volver a cargar
             if (document.querySelector('.navbar')) {
-                console.log('✅ Header ya existe, configurando navegación activa');
+                
                 this.setActiveNavigation();
                 return;
             }
@@ -68,11 +68,11 @@ class HeaderLoader {
             // Inicializar funcionalidad del menú móvil
             this.initializeMobileMenu();
             
-            console.log('✅ Header cargado exitosamente');
+            
             this.headerLoaded = true;
             
         } catch (error) {
-            console.error('❌ Error cargando header:', error);
+            
             // Fallback: crear header básico
             this.createFallbackHeader();
         }
@@ -93,10 +93,10 @@ class HeaderLoader {
                 document.body.insertBefore(headerElement.cloneNode(true), document.body.firstChild);
                 this.setActiveNavigation();
                 this.initializeMobileMenu();
-                console.log('✅ Header insertado dinámicamente');
+                
             }
         } catch (error) {
-            console.error('❌ Error insertando header:', error);
+            
         }
     }
 
@@ -117,7 +117,7 @@ class HeaderLoader {
             const activeLink = document.querySelector(`.navbar ${activeSelector}`);
             if (activeLink) {
                 activeLink.classList.add('active');
-                console.log(`🎯 Navegación activa configurada para: ${this.currentPage}`);
+                
             }
         }
     }
@@ -146,7 +146,7 @@ class HeaderLoader {
                 });
             });
             
-            console.log('📱 Menú móvil inicializado');
+            
         }
     }
 
@@ -180,7 +180,7 @@ class HeaderLoader {
         document.body.insertAdjacentHTML('afterbegin', fallbackHeader);
         this.setActiveNavigation();
         this.initializeMobileMenu();
-        console.log('✅ Header fallback creado');
+        
     }
 }
 

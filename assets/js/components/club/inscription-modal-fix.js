@@ -1,9 +1,13 @@
 // Parche para el envío profesional de emails con PDF garantizado
 
+
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
     // FUNCIÓN PARA CALCULAR EDAD AUTOMÁTICAMENTE
     function setupAgeCalculation() {
-        console.log('🧮 Configurando cálculo automático de edad...');
+        
         
         // Función para calcular edad exacta
         function calculateAge(birthDate) {
@@ -113,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     );
                 }
                 
-                console.log(`🧮 Edad calculada para hijo ${childNumber}: ${age} años`);
+                
             }
         }
         
@@ -133,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Agregar listener
                 input.addEventListener('change', input._ageCalculatorHandler);
                 
-                console.log(`📅 Listener de edad agregado a: ${input.name}`);
+                
             });
         }
         
@@ -157,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 childList: true,
                 subtree: true
             });
-            console.log('👀 Observador de DOM configurado para nuevos campos de fecha');
+            
         }
         
         return { attachDateListeners, calculateAge, suggestClub };
@@ -169,32 +173,131 @@ document.addEventListener('DOMContentLoaded', function() {
     // Esperar a que el modal se inicialice para la funcionalidad de email
     setTimeout(function() {
         if (window.inscriptionModal && window.inscriptionModal.sendEmailWithPDFInfo) {
-            console.log('📧 Aplicando mejora profesional al envío de emails...');
+            
             
             // Guardar la función original por si acaso
             window.inscriptionModal.originalSendEmail = window.inscriptionModal.sendEmailWithPDFInfo;
             
-            // NUEVA FUNCIÓN MEJORADA: Genera PDF garantizado + Email profesional
+            // NUEVA FUNCIÓN MEJORADA: EmailJS automático + PDF garantizado
             window.inscriptionModal.sendEmailWithPDFInfo = async function(data, pdfGenerated) {
-                console.log('📧 Preparando email profesional con PDF garantizado...');
+                
+                
+                
+                
+                
+                
+                // PASO 1: Verificar EmailJS - MÁS DETALLADO
+                
+                
+                
+                
+                console.log('📊 [FIX] window tiene keys:', Object.keys(window).filter(k => k.includes('email')));
+                
+                if (window.emailService) {
+                    try {
+                        const status = window.emailService.getStatus();
+                        
+                        
+                        // FORZAR INICIALIZACIÓN SI ES NECESARIO
+                        if (!status.ready) {
+                            
+                            await window.emailService.initEmailJS();
+                            
+                            const newStatus = window.emailService.getStatus();
+                            
+                        }
+                        
+                        // VERIFICAR DE NUEVO
+                        const finalStatus = window.emailService.getStatus();
+                        if (finalStatus.ready) {
+                            
+                            
+                            // PASO 2: Asegurar PDF
+                            let pdfGeneratedSuccessfully = pdfGenerated;
+                            const pdfBlob = window.lastGeneratedPDF || null;
+                            
+                            if (!pdfGeneratedSuccessfully) {
+                                
+                                try {
+                                    pdfGeneratedSuccessfully = await this.tryGeneratePDF(data);
+                                    
+                                } catch (error) {
+                                    
+                                }
+                            }
+                            
+                            // PASO 3: ENVÍO AUTOMÁTICO CON EMAILJS
+                            
+                            
+                            
+                            
+                            const result = await window.emailService.sendInscriptionEmail(
+                                data, 
+                                pdfBlob, 
+                                this.email
+                            );
+
+                            
+
+                            if (result.success) {
+                                
+                                
+                                const childrenText = data.children.length === 1 ? '1 hijo/hija' : `${data.children.length} hijos/hijas`;
+                                
+                                if (window.notifications) {
+                                    window.notifications.success(
+                                        'Email Enviado Automáticamente (EmailJS)',
+                                        `¡Perfecto! Se envió el email automáticamente a ${this.email} con el PDF adjunto para ${childrenText}.`,
+                                        {
+                                            duration: 8000,
+                                            actions: [
+                                                {
+                                                    label: '✅ Entendido',
+                                                    action: () => console.log('[FIX] Usuario confirmó envío automático EmailJS')
+                                                }
+                                            ]
+                                        }
+                                    );
+                                } else {
+                                    alert(`¡Email Enviado Automáticamente!\n\nEl email fue enviado exitosamente a ${this.email}.`);
+                                }
+                                
+                                this.closeModal();
+                                this.resetForm();
+                                return;
+                            } else {
+                                
+                            }
+                        } else {
+                            
+                        }
+                    } catch (error) {
+                        
+                    }
+                } else {
+                    
+                }
+                
+                // RESPALDO: Método original mejorado
+                
                 
                 // PASO 1: Asegurar que el PDF se genere
                 let pdfGeneratedSuccessfully = pdfGenerated;
                 
                 if (!pdfGeneratedSuccessfully) {
-                    console.log('🔧 PDF no generado previamente, intentando generar ahora...');
+                    
                     try {
                         pdfGeneratedSuccessfully = await this.tryGeneratePDF(data);
-                        console.log('📄 Resultado de generación de PDF:', pdfGeneratedSuccessfully ? 'ÉXITO ✅' : 'FALLÓ ❌');
+                        
                     } catch (error) {
-                        console.error('❌ Error generando PDF:', error);
+                        
                         pdfGeneratedSuccessfully = false;
                     }
                 }
                 
                 // PASO 2: Si aún no hay PDF, intentar método alternativo
                 if (!pdfGeneratedSuccessfully) {
-                    console.log('🔄 Intentando método de PDF alternativo...');
+                    
                     pdfGeneratedSuccessfully = await this.forceGeneratePDF(data);
                 }
                 
@@ -209,33 +312,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 // MENSAJE PROFESIONAL CORTO
                 const body = `Estimados hermanos,
 
-Saludos cordiales. Envío el PDF con la inscripción de su ${childText} ${childrenNames} para el club juvenil.
+Envío el PDF con la inscripción de su ${childText} ${childrenNames} para el club juvenil.
 
 El PDF contiene toda la información detallada de la inscripción. Por favor, revisen la información y nos pondremos en contacto pronto para confirmar la participación.
 
 Que Dios les bendiga,
 
 Iglesia Adventista del Séptimo Día Magnolia
-Bayamón, Puerto Rico
-
----
-Enviado desde: www.iasdmagnolia.org
-Fecha: ${new Date().toLocaleString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                })}`;
+Bayamón, Puerto Rico`;
                 
                 try {
                     const mailtoLink = `mailto:${this.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                     
                     // Log para debugging
-                    console.log('📧 Email destinatario:', this.email);
-                    console.log('📋 Asunto:', subject);
-                    console.log('📝 Mensaje profesional preparado');
-                    console.log('📄 PDF generado:', pdfGeneratedSuccessfully ? 'SÍ ✅' : 'NO ⚠️');
+                    
+                    
+                    
+                    
                     
                     // Intentar abrir el cliente de email
                     window.location.href = mailtoLink;
@@ -270,9 +363,9 @@ El mensaje básico está en el correo.`;
                     this.closeModal();
                     this.resetForm();
                     
-                    console.log('✅ Proceso completado - PDF:', pdfGeneratedSuccessfully ? 'Generado ✅' : 'No disponible ⚠️', '+ Email profesional preparado para:', this.email);
+                    
                 } catch (error) {
-                    console.error('❌ Error al preparar el email:', error);
+                    
                     
                     if (window.notifications) {
                         window.notifications.error(
@@ -296,7 +389,7 @@ ENVÍO MANUAL:
             
             // NUEVA FUNCIÓN: Generar PDF usando SOLO el método de imagen HTML
             window.inscriptionModal.forceGeneratePDF = async function(data) {
-                console.log('🎯 Generando PDF usando método HTML→Imagen exclusivamente...');
+                
                 
                 try {
                     // MÉTODO ÚNICO: Nuevo generador con imagen completa (html2canvas + jsPDF)
@@ -304,16 +397,16 @@ ENVÍO MANUAL:
                         console.log('🖼️ Usando generador HTML→Imagen (formato visual completo)...');
                         const success = await window.generatePDFWithLogo(data);
                         if (success) {
-                            console.log('✅ PDF visual con imagen completa generado exitosamente');
+                            
                             return true;
                         } else {
-                            console.warn('⚠️ Método HTML→Imagen falló, reintentando...');
+                            
                         }
                     }
                     
                     // MÉTODO DIRECTO: Acceder al generador directamente
                     if (window.pdfGeneratorWithLogo) {
-                        console.log('🔄 Intentando método directo HTML→Imagen...');
+                        
                         const success = await window.pdfGeneratorWithLogo.generatePDFFromHTML(data);
                         if (success) {
                             console.log('✅ PDF imagen generado exitosamente (método directo)');
@@ -321,19 +414,19 @@ ENVÍO MANUAL:
                         }
                     }
                     
-                    console.error('❌ NO se usará método básico de texto - solo formato imagen');
-                    console.error('❌ Verifique que html2canvas esté cargado correctamente');
+                    
+                    
                     return false;
                     
                 } catch (error) {
-                    console.error('❌ Error en método de imagen HTML:', error);
+                    
                     return false;
                 }
             };
             
-            console.log('✅ Función de email profesional con PDF garantizado aplicada correctamente');
+            
         } else {
-            console.warn('⚠️ Modal de inscripción no encontrado, reintentando en 2 segundos...');
+            
             setTimeout(arguments.callee, 2000);
         }
     }, 1000); // Cierre del setTimeout para funcionalidad de email

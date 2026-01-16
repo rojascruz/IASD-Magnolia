@@ -3,7 +3,7 @@
 // Versión: 1.0
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎨 Iniciando efectos modernos...');
+    
     
     // EFECTO: Navbar que se adapta al scroll
     function initScrollEffects() {
@@ -146,5 +146,5 @@ document.addEventListener('DOMContentLoaded', function() {
     initCounterAnimation();
     initTypingEffect();
     
-    console.log('✨ Efectos modernos activados');
+    
 });
